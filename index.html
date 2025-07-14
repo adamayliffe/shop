@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Our Stores</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #ffffff; /* White container background */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            border-radius: 1.5rem; /* More rounded corners */
+            padding: 2rem;
+            max-width: 90%; /* Responsive max-width */
+            width: 500px; /* Fixed width for larger screens */
+            text-align: center;
+        }
+        .button-grid {
+            display: grid;
+            gap: 1rem; /* Space between buttons */
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Responsive grid */
+        }
+        .store-button {
+            display: block; /* Make anchor tags behave like blocks */
+            padding: 1rem 1.5rem;
+            background-color: #4f46e5; /* Indigo 600 */
+            color: white;
+            font-weight: 600; /* Semi-bold */
+            border-radius: 0.75rem; /* Rounded corners for buttons */
+            text-decoration: none; /* No underline */
+            transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle button shadow */
+        }
+        .store-button:hover {
+            background-color: #4338ca; /* Darker indigo on hover */
+            transform: translateY(-2px); /* Slight lift effect */
+        }
+        .store-button:active {
+            transform: translateY(0); /* Press down effect */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 640px) {
+            .container {
+                padding: 1.5rem;
+                border-radius: 1rem;
+            }
+            .button-grid {
+                grid-template-columns: 1fr; /* Stack buttons on small screens */
+            }
+            h1 {
+                font-size: 1.75rem; /* Smaller heading on mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-3xl font-extrabold text-gray-900 mb-8 sm:text-4xl">
+            Welcome! Please Select Your Store
+        </h1>
+
+        <div class="button-grid">
+            <!-- Example Store Buttons -->
+            <a href="https://example.com/electronics" target="_blank" class="store-button">
+                The Ayliffe Boutique
+            </a>
+            <a href="https://example.com/fashion" target="_blank" class="store-button">
+                Festive Finds
+            </a>
+        </div>
+
+        <p class="text-gray-600 text-sm mt-8">
+            Click on a store above to begin your shopping experience.
+        </p>
+    </div>
+</body>
+</html>
