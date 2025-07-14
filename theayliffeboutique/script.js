@@ -128,6 +128,9 @@ document.addEventListener('DOMContentLoaded', () => {
             <form id="dynamic-agent-contact-form" action="https://formsubmit.co/adam.ayliffe2018@gmail.com" method="POST">
                 <input type="hidden" name="_subject" value="New Aylliffe Boutique Chatbot Inquiry!">
                 <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_next" value="https://adamayliffe.github.io/shop/theayliffeboutique">
+
+                <div class="form-group">
 
                 <div class="form-group">
                     <label for="dynamic-contact-name">Name</label>
