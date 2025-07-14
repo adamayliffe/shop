@@ -361,9 +361,9 @@ footer p {
     padding: 15px;
     overflow-y: auto; /* Scrollable messages */
     background-color: #f0e0d6; /* Light, warm background for messages */
-    display: flex; /* Make it a flex container for messages/buttons/form */
-    flex-direction: column;
-    gap: 10px; /* Space between messages */
+    display: flex; /* Make it a flex container */
+    flex-direction: column; /* Stack children vertically */
+    gap: 10px; /* Space between messages and dynamic sections */
 }
 
 /* Chat message bubbles */
@@ -389,14 +389,15 @@ footer p {
     border-bottom-right-radius: 0;
 }
 
-/* Quick Questions Buttons */
+/* Quick Questions Buttons Container */
 .quick-questions {
     display: flex;
     flex-direction: column;
     gap: 8px; /* Space between buttons */
-    margin-top: 10px;
+    margin-top: 10px; /* Space from previous message/section */
     width: 100%; /* Take full width of messages area */
     align-items: flex-start; /* Align buttons to the left */
+    /* When created by JS, this will be dynamically added. */
 }
 
 .quick-question-btn {
@@ -414,11 +415,19 @@ footer p {
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-.quick-question-btn:hover {
+.quick-question-btn:hover:not(:disabled) { /* Apply hover only if not disabled */
     background-color: #8c7373;
     color: white;
     border-color: #5d4a4a;
 }
+
+.quick-question-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: #f0f0f0;
+    color: #999;
+}
+
 
 /* Chatbot Input Area */
 .chatbot-input {
@@ -453,12 +462,12 @@ footer p {
     background-color: #333;
 }
 
-/* --- New Styles for Contact Form within Chatbot --- */
+/* --- Styles for Contact Form within Chatbot (dynamically added) --- */
 .contact-form-container {
     padding: 15px;
     background-color: #f5f5f5; /* Similar to chatbot messages background, but slightly different */
     border-radius: 8px;
-    margin-top: 10px;
+    margin-top: 10px; /* Space from previous message/section */
     width: 100%; /* Take full width within chatbot-messages */
     box-sizing: border-box; /* Include padding in width */
     display: flex; /* Use flexbox to organize content */
@@ -466,7 +475,7 @@ footer p {
     flex-shrink: 0; /* Prevent it from shrinking */
 }
 
-/* Style for the introductory bot message within the form container */
+/* Style for the introductory bot message within the form container (dynamic) */
 .contact-form-container .bot-message {
     background-color: #e0e0e0; /* Match bot message bubble */
     border-radius: 15px;
@@ -549,7 +558,6 @@ footer p {
 .chatbot-input.hidden {
     display: none !important;
 }
-
 
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
