@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const agentContactQuestion = [
-        { type: 'talk-to-agent', text: 'Contact an Agent via Email' }
+        { type: 'send-email-agent', text: 'Send Email to Agent' } // Changed type to differentiate from general 'talk-to-agent'
     ];
 
 
@@ -77,17 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
             button.dataset.question = q.type; // Store the question type in a data attribute
             quickQuestionsContainer.appendChild(button);
         });
-        attachQuickQuestionListeners(); // Re-attach listeners to new buttons
+        // We no longer need attachQuickQuestionListeners here because of event delegation on parent
         chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Auto-scroll
-    }
-
-    // Function to attach event listeners to quick question buttons
-    function attachQuickQuestionListeners() {
-        const currentQuickQuestionBtns = quickQuestionsContainer.querySelectorAll('.quick-question-btn');
-        currentQuickQuestionBtns.forEach(button => {
-            button.removeEventListener('click', handleQuickQuestionClick); // Prevent duplicate listeners
-            button.addEventListener('click', handleQuickQuestionClick);
-        });
     }
 
     // Handler for quick question button clicks
@@ -106,7 +97,10 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (questionType === 'more-help') {
                 addMessage(answers['more-help'], 'bot-message');
                 displayQuickQuestions(initialQuestions); // Go back to initial questions
-            } else {
+            } else if (questionType === 'send-email-agent') {
+                sendEmailToAgent(); // Directly call email function
+            }
+            else {
                 addMessage(answers[questionType], 'bot-message'); // Display the answer
                 // After giving an answer, display followup questions
                 setTimeout(() => {
@@ -125,6 +119,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         window.location.href = `mailto:${companyEmail}?subject=${subject}&body=${body}`;
         addMessage("Opening your email client now. Please send us a detailed message!", 'bot-message');
+        // After opening email, display followup questions or a "thank you"
+        setTimeout(() => {
+             addMessage("Is there anything else I can help you with?", 'bot-message');
+             displayQuickQuestions(followupQuestions);
+        }, 1500);
     }
 
 
@@ -138,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // When opening, ensure initial greeting and questions are displayed
                 chatbotMessages.innerHTML = ''; // Clear previous messages
                 addMessage(answers['initial-greeting'], 'bot-message');
-                displayQuickQuestions(initialQuestions);
+                displayQuickQuestions(initialQuestions); // <--- THIS IS THE CRUCIAL LINE ADDED/CORRECTED
             }
         });
     }
@@ -183,14 +182,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // We attach one listener to the parent container and check the target
     quickQuestionsContainer.addEventListener('click', (event) => {
         if (event.target.classList.contains('quick-question-btn')) {
-            const questionType = event.target.dataset.question;
-            if (questionType === 'talk-to-agent') { // Check if it's the specific "talk to agent" button
-                sendEmailToAgent();
-            } else {
-                handleQuickQuestionClick(event); // Handle other quick questions
-            }
+            // All quick question buttons, including the "Send Email to Agent" button,
+            // are now handled by the single handleQuickQuestionClick function.
+            // The `if (questionType === 'send-email-agent')` inside that function
+            // will correctly call `sendEmailToAgent()`.
+            handleQuickQuestionClick(event);
         }
     });
 
-    // Initial display of questions when chatbot is opened (already handled in chatbotButton click)
+    // The chatbot is initially hidden, so we don't need to display questions on DOMContentLoaded.
+    // They will be displayed when the chatbot button is clicked.
 });
