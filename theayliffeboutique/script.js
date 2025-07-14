@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM Content Loaded! Initializing script...'); // Debug: Confirm DOM is ready
+
     // --- Mobile Menu Toggle (for the main website nav) ---
     const mobileMenuIcon = document.querySelector('.mobile-menu-icon');
     const nav = document.querySelector('nav');
@@ -6,7 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mobileMenuIcon && nav) {
         mobileMenuIcon.addEventListener('click', () => {
             nav.classList.toggle('active');
+            console.log('Mobile menu toggled.'); // Debug
         });
+    } else {
+        console.warn('Mobile menu icon or navigation element not found.'); // Debug
     }
 
     // --- Chatbot Functionality ---
@@ -14,9 +19,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatbotContainer = document.getElementById('chatbot-container');
     const closeChatbotButton = document.querySelector('.close-chatbot');
     const chatbotMessages = document.getElementById('chatbot-messages');
+    // Direct selection of the quick-questions container for robust access
+    const quickQuestionsContainer = document.querySelector('#chatbot-messages .quick-questions');
+
     const userInput = document.getElementById('user-input');
     const sendButton = document.getElementById('send-button');
-    const quickQuestionsContainer = chatbotMessages.querySelector('.quick-questions'); // Reference to the div holding quick questions
+
+    // Debug: Check if essential chatbot elements are found
+    if (!chatbotButton) console.error('Chatbot button (ID: chatbot-button) not found!');
+    if (!chatbotContainer) console.error('Chatbot container (ID: chatbot-container) not found!');
+    if (!chatbotMessages) console.error('Chatbot messages container (ID: chatbot-messages) not found!');
+    if (!quickQuestionsContainer) console.error('Quick questions container (.quick-questions inside #chatbot-messages) not found!');
+    if (!userInput) console.error('User input (ID: user-input) not found!');
+    if (!sendButton) console.error('Send button (ID: send-button) not found!');
+
 
     // Define question sets
     const initialQuestions = [
@@ -30,13 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
         { type: 'returns-exchange', text: 'What is your return/exchange policy?' },
         { type: 'order-status', text: 'How can I check my order status?' },
         { type: 'product-care', text: 'How do I care for my garments?' },
-        { type: 'more-help', text: 'I need more help.' } // Option to go back to initial or just say talk to agent
+        { type: 'more-help', text: 'I need more help.' }
     ];
 
     const agentContactQuestion = [
-        { type: 'send-email-agent', text: 'Send Email to Agent' } // Changed type to differentiate from general 'talk-to-agent'
+        { type: 'send-email-agent', text: 'Send Email to Agent' }
     ];
-
 
     // Object to store all possible answers
     const answers = {
@@ -54,6 +69,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to add a message to the chat display
     function addMessage(message, type) {
+        if (!chatbotMessages) {
+            console.error('chatbotMessages container is null. Cannot add message.');
+            return;
+        }
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('message', type);
         // Handle newlines for messages with multiple paragraphs
@@ -64,20 +83,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         chatbotMessages.appendChild(messageDiv);
         chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Auto-scroll
+        console.log(`Message added: "${message.split('\n')[0]}..." (${type})`); // Debug: Log first line of message
     }
 
     // Function to display quick question buttons
     function displayQuickQuestions(questions) {
+        if (!quickQuestionsContainer) {
+            console.error('quickQuestionsContainer is null. Cannot display questions.');
+            return;
+        }
         // Clear previous questions
         quickQuestionsContainer.innerHTML = '';
+        console.log('Cleared quick questions container. Displaying new questions:', questions.map(q => q.text)); // Debug
+
         questions.forEach(q => {
             const button = document.createElement('button');
             button.classList.add('quick-question-btn');
             button.textContent = q.text;
             button.dataset.question = q.type; // Store the question type in a data attribute
             quickQuestionsContainer.appendChild(button);
+            console.log(`Added question button: "${q.text}"`); // Debug
         });
-        // We no longer need attachQuickQuestionListeners here because of event delegation on parent
         chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Auto-scroll
     }
 
@@ -88,12 +114,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const questionType = button.dataset.question;
 
         addMessage(questionText, 'user-message');
+        console.log(`User clicked: "${questionText}" (Type: ${questionType})`); // Debug
 
-        // Provide immediate feedback to the user that their query is being processed
         setTimeout(() => {
             if (questionType === 'talk-to-agent') {
                 addMessage(answers['talk-to-agent-intro'], 'bot-message');
-                displayQuickQuestions(agentContactQuestion); // Show only the "Contact via Email" button
+                displayQuickQuestions(agentContactQuestion); // Show only the "Send Email to Agent" button
             } else if (questionType === 'more-help') {
                 addMessage(answers['more-help'], 'bot-message');
                 displayQuickQuestions(initialQuestions); // Go back to initial questions
@@ -113,12 +139,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to handle "Talk to an Agent" via email
     function sendEmailToAgent() {
-        const companyEmail = 'support@aylliffeboutique.com'; // Replace with your actual company email
+        const companyEmail = 'support@aylliffeboutique.com'; // IMPORTANT: Replace with your actual company email
         const subject = encodeURIComponent('Customer Support Request from Website Chatbot');
         const body = encodeURIComponent('Dear Aylliffe Boutique Support Team,\n\nI would like to speak with an agent regarding the following:\n\n[Please describe your query here]\n\nMy name is [Your Name] and my email is [Your Email].\n\nThank you.');
 
         window.location.href = `mailto:${companyEmail}?subject=${subject}&body=${body}`;
         addMessage("Opening your email client now. Please send us a detailed message!", 'bot-message');
+        console.log(`Attempted to send email to agent: mailto:${companyEmail}`); // Debug
         // After opening email, display followup questions or a "thank you"
         setTimeout(() => {
              addMessage("Is there anything else I can help you with?", 'bot-message');
@@ -130,39 +157,50 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Event Listeners and Initial Setup ---
 
     // Toggle chatbot visibility
-    if (chatbotButton) {
+    if (chatbotButton && chatbotContainer && chatbotMessages && quickQuestionsContainer) { // Ensure all elements are found
         chatbotButton.addEventListener('click', () => {
-            chatbotContainer.style.display = chatbotContainer.style.display === 'flex' ? 'none' : 'flex';
-            if (chatbotContainer.style.display === 'flex') {
-                // When opening, ensure initial greeting and questions are displayed
-                chatbotMessages.innerHTML = ''; // Clear previous messages
+            console.log('Chatbot button clicked.'); // Debug
+            const isChatbotVisible = chatbotContainer.style.display === 'flex';
+            chatbotContainer.style.display = isChatbotVisible ? 'none' : 'flex';
+
+            if (!isChatbotVisible) { // If chatbot is now becoming visible
+                console.log('Chatbot is now visible. Initializing...'); // Debug
+                chatbotMessages.innerHTML = ''; // Clear previous messages (messages only, not the quick questions div)
+                
+                // Add the initial greeting message
                 addMessage(answers['initial-greeting'], 'bot-message');
-                displayQuickQuestions(initialQuestions); // <--- THIS IS THE CRUCIAL LINE ADDED/CORRECTED
+                
+                // Display the initial set of quick questions
+                displayQuickQuestions(initialQuestions); // THIS IS THE CRUCIAL CALL
             }
         });
+    } else {
+        console.error('One or more essential chatbot elements not found, chatbot functionality may be impaired.');
     }
 
     // Close chatbot button
-    if (closeChatbotButton) {
+    if (closeChatbotButton && chatbotContainer) {
         closeChatbotButton.addEventListener('click', () => {
             chatbotContainer.style.display = 'none';
+            console.log('Chatbot closed.'); // Debug
         });
     }
 
     // Handle sending user messages from input field
-    if (sendButton) {
+    if (sendButton && userInput && chatbotMessages && quickQuestionsContainer) {
         sendButton.addEventListener('click', () => {
             const message = userInput.value.trim();
             if (message) {
                 addMessage(message, 'user-message');
                 userInput.value = '';
+                console.log(`User typed message: "${message}"`); // Debug
                 // Simulate a generic bot response for typed messages
                 setTimeout(() => {
                     addMessage(answers['generic-typed-message'], 'bot-message');
                     // After a typed message, always offer to talk to an agent or provide more help options
                     setTimeout(() => {
                          addMessage("Is there anything else I can help you with?", 'bot-message');
-                         displayQuickQuestions(followupQuestions); // Offer followup or agent contact
+                         displayQuickQuestions(followupQuestions);
                     }, 1000);
                 }, 1000);
             }
@@ -170,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Allow sending messages with Enter key
-    if (userInput) {
+    if (userInput && sendButton) {
         userInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 sendButton.click();
@@ -179,17 +217,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Delegation for dynamically added quick question buttons
-    // We attach one listener to the parent container and check the target
-    quickQuestionsContainer.addEventListener('click', (event) => {
-        if (event.target.classList.contains('quick-question-btn')) {
-            // All quick question buttons, including the "Send Email to Agent" button,
-            // are now handled by the single handleQuickQuestionClick function.
-            // The `if (questionType === 'send-email-agent')` inside that function
-            // will correctly call `sendEmailToAgent()`.
-            handleQuickQuestionClick(event);
-        }
-    });
-
-    // The chatbot is initially hidden, so we don't need to display questions on DOMContentLoaded.
-    // They will be displayed when the chatbot button is clicked.
+    // Attach one listener to the parent container (quickQuestionsContainer) and check the target
+    if (quickQuestionsContainer) { // Ensure container exists before adding listener
+        quickQuestionsContainer.addEventListener('click', (event) => {
+            if (event.target.classList.contains('quick-question-btn')) {
+                console.log('Quick question button clicked via delegation.'); // Debug
+                handleQuickQuestionClick(event);
+            }
+        });
+    }
+    // No initial display on DOMContentLoaded, as the chatbot starts hidden.
+    // Display will happen when the chatbot button is clicked.
 });
