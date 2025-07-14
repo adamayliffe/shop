@@ -17,26 +17,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatbotContainer = document.getElementById('chatbot-container');
     const closeChatbotButton = document.querySelector('.close-chatbot');
     const chatbotMessages = document.getElementById('chatbot-messages');
-
-    // New element references for the form
-    const quickQuestionsContainer = document.querySelector('.quick-questions');
-    const contactFormContainer = document.getElementById('contact-form-container');
-    const agentContactForm = document.getElementById('agent-contact-form');
-    const userInputContainer = document.querySelector('.chatbot-input'); // The div holding user input and send button
-
-    const contactNameInput = document.getElementById('contact-name');
-    const contactEmailInput = document.getElementById('contact-email');
-    const contactPhoneInput = document.getElementById('contact-phone');
-    const contactMessageInput = document.getElementById('contact-message');
+    // Note: quickQuestionsContainer and contactFormContainer are NOT statically retrieved here
+    // because they will be created dynamically.
+    const userInputContainer = document.querySelector('.chatbot-input');
+    const userInput = document.getElementById('user-input');
+    const sendButton = document.getElementById('send-button');
 
     // Debug: Check if essential chatbot elements are found
     if (!chatbotButton) console.error('Chatbot button (ID: chatbot-button) not found!');
     if (!chatbotContainer) console.error('Chatbot container (ID: chatbot-container) not found!');
     if (!chatbotMessages) console.error('Chatbot messages container (ID: chatbot-messages) not found!');
-    if (!quickQuestionsContainer) console.error('Quick questions container (.quick-questions) not found!');
-    if (!contactFormContainer) console.error('Contact form container (ID: contact-form-container) not found!');
-    if (!agentContactForm) console.error('Agent contact form (ID: agent-contact-form) not found!');
     if (!userInputContainer) console.error('User input container (.chatbot-input) not found!');
+    if (!userInput) console.error('User input (ID: user-input) not found!');
+    if (!sendButton) console.error('Send button (ID: send-button) not found!');
 
 
     // --- Question & Answer Data ---
@@ -87,88 +80,133 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(`Message added: "${message.split('\n')[0]}..." (${type})`);
     }
 
-    // Function to display quick question buttons
+    // Function to display quick question buttons (now dynamic containers)
     function displayQuickQuestions(questions) {
-        if (!quickQuestionsContainer) {
-            console.error('quickQuestionsContainer is null. Cannot display questions.');
+        if (!chatbotMessages) {
+            console.error('chatbotMessages container is null. Cannot display quick questions.');
             return;
         }
-        quickQuestionsContainer.innerHTML = ''; // Clear existing buttons
-        quickQuestionsContainer.classList.remove('hidden'); // Show the quick questions div
-        contactFormContainer.classList.add('hidden'); // Hide the contact form
-        userInputContainer.classList.remove('hidden'); // Show the bottom text input
+        // Create a new container for this set of quick questions
+        const newQuickQuestionsDiv = document.createElement('div');
+        newQuickQuestionsDiv.classList.add('quick-questions'); // Add base class for styling
 
-        console.log('Cleared quick questions container. Displaying new questions:', questions.map(q => q.text));
+        console.log('Creating new quick questions container. Displaying new questions:', questions.map(q => q.text));
 
         questions.forEach(q => {
             const button = document.createElement('button');
             button.classList.add('quick-question-btn');
             button.textContent = q.text;
             button.dataset.question = q.type;
-            quickQuestionsContainer.appendChild(button);
+            newQuickQuestionsDiv.appendChild(button);
             console.log(`Added question button: "${q.text}"`);
         });
-        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+
+        chatbotMessages.appendChild(newQuickQuestionsDiv); // Append to the main messages area
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Scroll to bottom
     }
 
-    // Function to display the contact form
+    // Function to display the contact form (now dynamic container)
     function displayContactForm() {
-        if (!contactFormContainer) {
-            console.error('contactFormContainer is null. Cannot display form.');
+        if (!chatbotMessages) {
+            console.error('chatbotMessages container is null. Cannot display contact form.');
             return;
         }
-        quickQuestionsContainer.classList.add('hidden'); // Hide quick questions
-        contactFormContainer.classList.remove('hidden'); // Show the contact form
+
+        // Create a new container for the form
+        const newContactFormContainer = document.createElement('div');
+        newContactFormContainer.classList.add('contact-form-container'); // Add base class for styling
+        newContactFormContainer.id = 'dynamic-contact-form-container'; // Give it a unique ID for easy retrieval
+
+        // Add the introductory bot message
+        const botIntroMessage = document.createElement('p');
+        botIntroMessage.classList.add('bot-message'); // Class for styling
+        botIntroMessage.textContent = answers['agent-form-intro'];
+        newContactFormContainer.appendChild(botIntroMessage);
+
+        // Construct the form HTML
+        const formHTML = `
+            <form id="dynamic-agent-contact-form">
+                <div class="form-group">
+                    <label for="dynamic-contact-name">Name</label>
+                    <input type="text" id="dynamic-contact-name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="dynamic-contact-email">Email</label>
+                    <input type="email" id="dynamic-contact-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="dynamic-contact-phone">Phone</label>
+                    <input type="tel" id="dynamic-contact-phone" name="phone">
+                </div>
+                <div class="form-group">
+                    <label for="dynamic-contact-message">Message</label>
+                    <textarea id="dynamic-contact-message" name="message" rows="4" required></textarea>
+                </div>
+                <button type="submit" id="dynamic-submit-contact-form">Submit</button>
+            </form>
+        `;
+        newContactFormContainer.insertAdjacentHTML('beforeend', formHTML);
+
+        chatbotMessages.appendChild(newContactFormContainer); // Append to main messages area
         userInputContainer.classList.add('hidden'); // Hide the bottom text input when form is active
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Scroll to bottom
+        console.log('Displayed contact form dynamically.');
 
-        // Clear existing messages except the initial greeting/form intro
-        // We'll let the "The Aylliffe Boutique welcomes you..." message be part of the HTML
-        // For dynamic content, you might want to clear and re-add.
-        // For simplicity with pre-baked form text:
-        // chatbotMessages.innerHTML = ''; // This would clear the bot's initial greeting too
-
-        // Add an introductory message just before the form if not already part of HTML
-        // addMessage(answers['agent-form-intro'], 'bot-message'); // This is now part of the HTML bot-message
-        
-        // Ensure form is cleared
-        agentContactForm.reset();
-        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-        console.log('Displayed contact form.');
+        // Attach event listener to the dynamically created form
+        const currentAgentContactForm = document.getElementById('dynamic-agent-contact-form');
+        if (currentAgentContactForm) {
+            currentAgentContactForm.addEventListener('submit', handleFormSubmit);
+            console.log('Attached submit listener to dynamic form.');
+        } else {
+            console.error('Dynamic form element not found to attach listener.');
+        }
     }
 
     // --- Event Handlers ---
 
-    // Handle quick question button clicks
-    function handleQuickQuestionClick(event) {
-        const button = event.target;
-        const questionText = button.textContent;
-        const questionType = button.dataset.question;
+    // Handle quick question button clicks (delegated from chatbotMessages)
+    // This listener needs to be on chatbotMessages as new quick-questions divs are added
+    if (chatbotMessages) {
+        chatbotMessages.addEventListener('click', (event) => {
+            if (event.target.classList.contains('quick-question-btn')) {
+                const button = event.target;
+                const questionText = button.textContent;
+                const questionType = button.dataset.question;
 
-        addMessage(questionText, 'user-message');
-        console.log(`User clicked: "${questionText}" (Type: ${questionType})`);
+                addMessage(questionText, 'user-message');
+                console.log(`User clicked: "${questionText}" (Type: ${questionType})`);
 
-        setTimeout(() => {
-            if (questionType === 'speak-to-agent') {
-                addMessage(answers['agent-form-intro'], 'bot-message');
-                displayContactForm(); // Show the contact form
-            } else {
-                addMessage(answers[questionType], 'bot-message'); // Display the answer
+                // Disable all buttons in the current quick-questions group after one is clicked
+                let parentQuickQuestionsDiv = button.closest('.quick-questions');
+                if (parentQuickQuestionsDiv) {
+                    Array.from(parentQuickQuestionsDiv.querySelectorAll('button')).forEach(btn => btn.disabled = true);
+                }
+
                 setTimeout(() => {
-                    addMessage("Is there anything else I can help you with?", 'bot-message');
-                    displayQuickQuestions(followupQuestions); // Display followup questions
-                }, 1000);
+                    if (questionType === 'speak-to-agent') {
+                        displayContactForm(); // Show the contact form
+                    } else {
+                        addMessage(answers[questionType], 'bot-message'); // Display the answer
+                        setTimeout(() => {
+                            addMessage("Is there anything else I can help you with?", 'bot-message');
+                            displayQuickQuestions(followupQuestions); // Display followup questions
+                        }, 1000);
+                    }
+                }, 800);
             }
-        }, 800);
+        });
     }
+
 
     // Handle form submission (mailto)
     function handleFormSubmit(event) {
         event.preventDefault(); // Prevent default form submission
 
-        const name = contactNameInput.value.trim();
-        const email = contactEmailInput.value.trim();
-        const phone = contactPhoneInput.value.trim();
-        const message = contactMessageInput.value.trim();
+        // Get values from the dynamically created form inputs
+        const name = document.getElementById('dynamic-contact-name').value.trim();
+        const email = document.getElementById('dynamic-contact-email').value.trim();
+        const phone = document.getElementById('dynamic-contact-phone').value.trim();
+        const message = document.getElementById('dynamic-contact-message').value.trim();
 
         if (!name || !email || !message) {
             alert('Please fill in Name, Email, and Message fields.');
@@ -189,19 +227,27 @@ document.addEventListener('DOMContentLoaded', () => {
         addMessage("Thank you for your inquiry! Your email client should open shortly with a pre-filled message. Please click 'Send' in your email client to send it.", 'bot-message');
         console.log('Attempted to send email via mailto link.');
 
-        // Optionally, clear the form and display quick questions again after submission
+        // Hide and remove the current dynamic form after submission
+        const currentDynamicFormContainer = document.getElementById('dynamic-contact-form-container');
+        if(currentDynamicFormContainer) {
+            currentDynamicFormContainer.remove(); // Remove the form from display
+        }
+
+        // Show the user input field again
+        userInputContainer.classList.remove('hidden');
+
+        // Offer initial questions again
         setTimeout(() => {
-            agentContactForm.reset(); // Clear form fields
             addMessage("Is there anything else I can help you with?", 'bot-message');
-            displayQuickQuestions(initialQuestions); // Or followupQuestions, depending on desired flow
+            displayQuickQuestions(initialQuestions);
         }, 2000);
     }
 
 
-    // --- Initial Setup & Event Listeners ---
+    // --- Initial Setup & Chatbot Toggle ---
 
     // Toggle chatbot visibility
-    if (chatbotButton && chatbotContainer && chatbotMessages && quickQuestionsContainer && contactFormContainer && userInputContainer) {
+    if (chatbotButton && chatbotContainer && chatbotMessages && userInputContainer) {
         chatbotButton.addEventListener('click', () => {
             console.log('Chatbot button clicked.');
             const isChatbotVisible = chatbotContainer.style.display === 'flex';
@@ -209,13 +255,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!isChatbotVisible) { // If chatbot is now becoming visible
                 console.log('Chatbot is now visible. Initializing...');
-                // Clear all dynamic messages before showing initial state
-                // This targets messages added by JS, leaving the static form HTML untouched for now.
-                const existingDynamicMessages = chatbotMessages.querySelectorAll('.message:not(.initial-form-message)');
-                existingDynamicMessages.forEach(msg => msg.remove());
+                chatbotMessages.innerHTML = ''; // Clear all previous chat history
 
                 addMessage(answers['initial-greeting'], 'bot-message');
                 displayQuickQuestions(initialQuestions); // Show initial quick questions
+                userInputContainer.classList.remove('hidden'); // Ensure input is visible on open
             }
         });
     } else {
@@ -230,52 +274,33 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Handle sending user messages from input field
-    // Only allow typing if the form is NOT visible
-    if (userInputContainer && agentContactForm) {
-        userInputContainer.querySelector('button').addEventListener('click', () => {
-            const message = userInputContainer.querySelector('input').value.trim();
-            if (message && !contactFormContainer.classList.contains('hidden')) { // Ensure form is not visible
-                 addMessage(message, 'user-message');
-                 userInputContainer.querySelector('input').value = '';
-                 console.log(`User typed message: "${message}"`);
-                 setTimeout(() => {
-                     addMessage(answers['generic-typed-message'], 'bot-message');
-                     setTimeout(() => {
-                          addMessage("Is there anything else I can help you with?", 'bot-message');
-                          displayQuickQuestions(followupQuestions); // Offer followup or agent contact
-                     }, 1000);
-                 }, 1000);
-            } else if (contactFormContainer.classList.contains('hidden') && message) {
-                // This means the user typed in the input field while the form was meant to be hidden.
-                // This scenario should be prevented by hiding the input container.
-                // However, as a fallback:
-                 addMessage(message, 'user-message');
-                 userInputContainer.querySelector('input').value = '';
-                 addMessage("I'm currently in 'contact form' mode. Please fill the form or close the bot if you prefer.", 'bot-message');
+    // Handle sending user messages from input field (only if no form is active)
+    if (sendButton && userInput) {
+        sendButton.addEventListener('click', () => {
+            const message = userInput.value.trim();
+            // Check if there is an active form displayed by looking for its dynamic ID
+            const activeForm = document.getElementById('dynamic-contact-form-container');
+            if (message && !activeForm) { // Only process if message exists AND no form is active
+                addMessage(message, 'user-message');
+                userInput.value = '';
+                console.log(`User typed message: "${message}"`);
+                setTimeout(() => {
+                    addMessage(answers['generic-typed-message'], 'bot-message');
+                    setTimeout(() => {
+                         addMessage("Is there anything else I can help you with?", 'bot-message');
+                         displayQuickQuestions(followupQuestions);
+                    }, 1000);
+                }, 1000);
             }
+            // If activeForm exists, the userInputContainer should be hidden,
+            // so this else if block should ideally not be hit in normal operation.
         });
 
-        userInputContainer.querySelector('input').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !contactFormContainer.classList.contains('hidden')) {
-                userInputContainer.querySelector('button').click();
+        userInput.addEventListener('keypress', (e) => {
+            const activeForm = document.getElementById('dynamic-contact-form-container');
+            if (e.key === 'Enter' && !activeForm) { // Only submit if no form is active
+                sendButton.click();
             }
         });
-    }
-
-
-    // Delegation for dynamically added quick question buttons
-    if (quickQuestionsContainer) {
-        quickQuestionsContainer.addEventListener('click', (event) => {
-            if (event.target.classList.contains('quick-question-btn')) {
-                console.log('Quick question button clicked via delegation.');
-                handleQuickQuestionClick(event);
-            }
-        });
-    }
-
-    // Form submission listener
-    if (agentContactForm) {
-        agentContactForm.addEventListener('submit', handleFormSubmit);
     }
 });
