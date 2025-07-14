@@ -677,6 +677,8 @@
                 <h3 class="text-2xl font-bold text-indigo-700 mb-4 text-center">Your Details</h3>
                 <!-- FormSubmit will handle the submission directly -->
                 <form id="order-details-form" action="https://formsubmit.co/adam.ayliffe2018@gmail.com" method="POST" class="space-y-4">
+                    <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="_template" value="table">
                     <div>
                         <label for="customer-name" class="block text-sm font-medium text-gray-700">Your Name</label>
                         <input type="text" id="customer-name" name="Customer Name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
