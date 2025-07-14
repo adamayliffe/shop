@@ -71,7 +71,7 @@
             transform: translateY(-8px) rotate(-45deg);
         }
 
-        /* Custom styles for payment buttons */
+        /* Custom styles for payment buttons (not used in this version, but kept for reference if needed) */
         .payment-button {
             display: flex;
             align-items: center;
@@ -94,6 +94,30 @@
         .payment-button img {
             height: 1.5rem; /* Adjust as needed */
             margin-right: 0.75rem;
+        }
+
+        /* Styles for the custom message box */
+        .message-box-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+        }
+
+        .message-box-content {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
         }
     </style>
 </head>
@@ -638,62 +662,39 @@
             </div>
         </section>
 
-        <!-- Payment Options Page Section -->
-        <section id="payment-options" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8 text-center">
-            <h2 class="text-3xl font-bold text-indigo-700 mb-6">Choose Your Payment Method</h2>
-            <p class="text-lg text-gray-600 mb-8">Select your preferred payment option to complete your purchase.</p>
-
-            <div class="flex flex-col items-center space-y-6 max-w-sm mx-auto">
-                <button id="paypal-btn" class="payment-button bg-blue-700 hover:bg-blue-800 w-full">
-                    <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_74x46.jpg" onerror="this.onerror=null;this.src='https://placehold.co/74x46/003087/ffffff?text=PayPal';" alt="PayPal Logo">
-                    Pay with PayPal
-                </button>
-
-                <button id="apple-pay-btn" class="payment-button bg-gray-900 hover:bg-black w-full">
-                    <img src="https://developer.apple.com/design/human-interface-guidelines/images/icons/apple-pay-logo.png" onerror="this.onerror=null;this.src='https://placehold.co/74x46/000000/ffffff?text=ApplePay';" alt="Apple Pay Logo">
-                    Pay with Apple Pay
-                </button>
-
-                <button id="google-pay-btn" class="payment-button bg-gray-700 hover:bg-gray-800 w-full">
-                    <img src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_200x66px.svg" onerror="this.onerror=null;this.src='https://placehold.co/74x46/4285F4/ffffff?text=GooglePay';" alt="Google Pay Logo">
-                    Pay with Google Pay
-                </button>
-
-                <button id="credit-card-btn" class="payment-button bg-indigo-600 hover:bg-indigo-700 w-full">
-                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
-                    Pay with Credit Card
-                </button>
+        <!-- Order Summary Section (New) -->
+        <section id="order-summary" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-6 text-center">Order Summary and Confirmation</h2>
+            <div id="order-summary-items" class="space-y-4 mb-6">
+                <!-- Order items will be rendered here by JavaScript -->
+                <p class="text-gray-600 text-center">No items in order summary.</p>
             </div>
-        </section>
+            <div class="mt-8 pt-4 border-t border-gray-200 flex justify-between items-center">
+                <p class="text-xl font-bold text-gray-800">Order Total: <span id="order-summary-total">£0.00</span></p>
+            </div>
 
-        <!-- Original Payment Page Section (now accessed via Credit Card button) -->
-        <section id="credit-card-payment-page" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
-            <h2 class="text-3xl font-bold text-indigo-700 mb-6">Credit Card Payment</h2>
-            <div class="max-w-md mx-auto">
-                <form id="credit-card-form" class="space-y-6">
+            <div class="mt-8 max-w-md mx-auto">
+                <h3 class="text-2xl font-bold text-indigo-700 mb-4 text-center">Your Details</h3>
+                <!-- FormSubmit will handle the submission directly -->
+                <form id="order-details-form" action="https://formsubmit.co/adam.ayliffe2018@gmail.com" method="POST" class="space-y-4">
                     <div>
-                        <label for="cc-card-number" class="block text-sm font-medium text-gray-700">Card Number</label>
-                        <input type="text" id="cc-card-number" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" required>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label for="cc-expiry-date" class="block text-sm font-medium text-gray-700">Expiry Date (MM/YY)</label>
-                            <input type="text" id="cc-expiry-date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="MM/YY" maxlength="5" required>
-                        </div>
-                        <div>
-                            <label for="cc-cvc" class="block text-sm font-medium text-gray-700">CVC</label>
-                            <input type="text" id="cc-cvc" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="XXX" maxlength="4" required>
-                        </div>
+                        <label for="customer-name" class="block text-sm font-medium text-gray-700">Your Name</label>
+                        <input type="text" id="customer-name" name="Customer Name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
                     </div>
                     <div>
-                        <label for="cc-card-name" class="block text-sm font-medium text-gray-700">Name on Card</label>
-                        <input type="text" id="cc-card-name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                        <label for="customer-email" class="block text-sm font-medium text-gray-700">Your Email</label>
+                        <input type="email" id="customer-email" name="Customer Email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
                     </div>
-                    <div>
-                        <label for="cc-billing-address" class="block text-sm font-medium text-gray-700">Billing Address</label>
-                        <textarea id="cc-billing-address" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required></textarea>
-                    </div>
-                    <button type="submit" class="w-full bg-green-600 text-white py-3 px-4 rounded-md text-lg font-semibold hover:bg-green-700 transition-colors duration-300">Confirm Credit Card Payment</button>
+                    <!-- Hidden input to set the email subject -->
+                    <input type="hidden" name="_subject" value="New Festive Finds Order!">
+                    <!-- Hidden input for autoresponse to customer -->
+                    <input type="hidden" name="_autoresponse" value="Thank you for your order from Festive Finds! We've received your order and will process it shortly.">
+                    <!-- Hidden input to redirect after submission -->
+                    <input type="hidden" name="_next" value="YOUR_WEBSITE_URL_HERE#home">
+                    <!-- Hidden input for the order details, populated by JS -->
+                    <input type="hidden" name="Order Details" id="order-details-hidden">
+
+                    <button type="submit" id="submit-order-email-btn" class="w-full bg-green-600 text-white py-3 px-4 rounded-md text-lg font-semibold hover:bg-green-700 transition-colors duration-300">Submit Order</button>
                 </form>
             </div>
         </section>
@@ -712,6 +713,14 @@
         </div>
     </footer>
 
+    <!-- Custom Message Box HTML -->
+    <div id="custom-message-box" class="message-box-overlay hidden">
+        <div class="message-box-content">
+            <p id="message-box-text" class="text-lg text-gray-700 mb-6"></p>
+            <button id="message-box-close-btn" class="bg-indigo-600 text-white py-2 px-5 rounded-md hover:bg-indigo-700 transition-colors duration-300">OK</button>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const mobileMenuButton = document.getElementById('mobile-menu-button');
@@ -728,15 +737,35 @@
             const emptyBasketMessage = document.getElementById('empty-basket-message');
             const checkoutBtn = document.getElementById('checkout-btn');
 
-            // Payment option buttons
-            const paypalBtn = document.getElementById('paypal-btn');
-            const applePayBtn = document.getElementById('apple-pay-btn');
-            const googlePayBtn = document.getElementById('google-pay-btn');
-            const creditCardBtn = document.getElementById('credit-card-btn'); // New: button to go to credit card form
+            // New elements for Order Summary
+            const orderSummaryItemsContainer = document.getElementById('order-summary-items');
+            const orderSummaryTotalSpan = document.getElementById('order-summary-total');
+            const orderDetailsForm = document.getElementById('order-details-form');
+            const customerNameInput = document.getElementById('customer-name');
+            const customerEmailInput = document.getElementById('customer-email');
+            const submitOrderEmailBtn = document.getElementById('submit-order-email-btn');
+            const orderDetailsHiddenInput = document.getElementById('order-details-hidden'); // Hidden input for order details
 
-            const creditCardForm = document.getElementById('credit-card-form'); // Renamed from paymentForm
+            // Custom Message Box elements
+            const customMessageBox = document.getElementById('custom-message-box');
+            const messageBoxText = document.getElementById('message-box-text');
+            const messageBoxCloseBtn = document.getElementById('message-box-close-btn');
 
             let basket = []; // Array to store items in the basket
+
+            // Function to show a custom message box
+            function showMessageBox(message) {
+                messageBoxText.textContent = message;
+                customMessageBox.classList.remove('hidden');
+            }
+
+            // Function to hide the custom message box
+            function hideMessageBox() {
+                customMessageBox.classList.add('hidden');
+            }
+
+            // Attach event listener to the close button of the message box
+            messageBoxCloseBtn.addEventListener('click', hideMessageBox);
 
             // Function to show a specific section and hide others
             function showSection(sectionId) {
@@ -749,6 +778,8 @@
                     // If navigating to basket, render basket items
                     if (sectionId === 'basket') {
                         renderBasket();
+                    } else if (sectionId === 'order-summary') {
+                        renderOrderSummary();
                     }
                 } else {
                     // If no specific section is found, show the home section
@@ -763,7 +794,7 @@
                 basketCountMobileSpan.textContent = totalItems;
             }
 
-            // Function to render basket items
+            // Function to render basket items in the basket section
             function renderBasket() {
                 basketItemsContainer.innerHTML = ''; // Clear existing items
                 let total = 0;
@@ -805,6 +836,40 @@
                 });
             }
 
+            // Function to render order summary items in the order-summary section
+            function renderOrderSummary() {
+                orderSummaryItemsContainer.innerHTML = ''; // Clear existing items
+                let total = 0;
+                let orderDetailsText = ''; // To capture details for the hidden input
+
+                if (basket.length === 0) {
+                    orderSummaryItemsContainer.innerHTML = '<p class="text-gray-600 text-center">Your basket is empty. Please add items to proceed.</p>';
+                    submitOrderEmailBtn.disabled = true;
+                    submitOrderEmailBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    submitOrderEmailBtn.disabled = false;
+                    submitOrderEmailBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+                    basket.forEach(item => {
+                        const itemElement = document.createElement('div');
+                        itemElement.classList.add('flex', 'justify-between', 'items-center', 'bg-gray-50', 'p-4', 'rounded-md', 'shadow-sm');
+                        itemElement.innerHTML = `
+                            <div>
+                                <p class="font-semibold text-gray-700">${item.name}</p>
+                                <p class="text-sm text-gray-500">Quantity: ${item.quantity} x £${item.price.toFixed(2)}</p>
+                            </div>
+                            <span class="font-bold text-gray-800">£${(item.price * item.quantity).toFixed(2)}</span>
+                        `;
+                        orderSummaryItemsContainer.appendChild(itemElement);
+                        total += item.price * item.quantity;
+                        orderDetailsText += `- ${item.name} (Qty: ${item.quantity}) - £${item.price.toFixed(2)} each - Total: £${(item.price * item.quantity).toFixed(2)}\n`;
+                    });
+                }
+                orderSummaryTotalSpan.textContent = `£${total.toFixed(2)}`;
+                orderDetailsHiddenInput.value = orderDetailsText + `\nOrder Total: £${total.toFixed(2)}`; // Populate hidden input
+            }
+
+
             // Function to add an item to the basket
             function addToBasket(productName, productPrice) {
                 const existingItem = basket.find(item => item.name === productName);
@@ -814,7 +879,7 @@
                     basket.push({ name: productName, price: productPrice, quantity: 1 });
                 }
                 updateBasketCount();
-                console.log(`${productName} added to basket!`);
+                showMessageBox(`${productName} added to basket!`);
             }
 
             // Function to remove an item from the basket
@@ -872,69 +937,63 @@
                 });
             });
 
-            // Checkout button functionality: navigate to payment options page
+            // Checkout button functionality: navigate to order summary page
             checkoutBtn.addEventListener('click', () => {
                 if (basket.length > 0) {
-                    showSection('payment-options'); // Navigate to the new payment options page
+                    showSection('order-summary'); // Navigate to the new order summary page
                 } else {
-                    // Use a custom message box or modal instead of alert()
-                    console.log('Your basket is empty. Please add items before checking out.');
-                    // For now, we'll use a simple alert as a placeholder for a custom modal
-                    alert('Your basket is empty. Please add items before checking out.');
+                    showMessageBox('Your basket is empty. Please add items before checking out.');
                 }
             });
 
-            // Event listeners for simulated payment buttons
-            if (paypalBtn) {
-                paypalBtn.addEventListener('click', () => {
-                    alert('Simulating PayPal payment... (In a real app, this would redirect to PayPal)');
-                    basket = []; // Clear basket after simulated payment
-                    updateBasketCount();
-                    renderBasket();
-                    showSection('home'); // Go back to home after simulated payment
-                });
-            }
+            // Submit Order via FormSubmit button functionality
+            orderDetailsForm.addEventListener('submit', (event) => {
+                // The form will submit normally to FormSubmit.
+                // We just need to ensure the hidden order details are populated
+                // and then provide feedback.
 
-            if (applePayBtn) {
-                applePayBtn.addEventListener('click', () => {
-                    alert('Simulating Apple Pay payment... (In a real app, this would open Apple Pay sheet)');
-                    basket = []; // Clear basket after simulated payment
-                    updateBasketCount();
-                    renderBasket();
-                    showSection('home'); // Go back to home after simulated payment
-                });
-            }
+                const customerName = customerNameInput.value.trim();
+                const customerEmail = customerEmailInput.value.trim();
 
-            if (googlePayBtn) {
-                googlePayBtn.addEventListener('click', () => {
-                    alert('Simulating Google Pay payment... (In a real app, this would open Google Pay sheet)');
-                    basket = []; // Clear basket after simulated payment
-                    updateBasketCount();
-                    renderBasket();
-                    showSection('home'); // Go back to home after simulated payment
-                });
-            }
+                if (!customerName || !customerEmail) {
+                    showMessageBox('Please enter your name and email address to submit the order.');
+                    event.preventDefault(); // Prevent submission if validation fails
+                    return;
+                }
 
-            // Credit Card button functionality: navigate to the original credit card form
-            if (creditCardBtn) {
-                creditCardBtn.addEventListener('click', () => {
-                    showSection('credit-card-payment-page');
-                });
-            }
+                if (basket.length === 0) {
+                    showMessageBox('Your basket is empty. Cannot submit an empty order.');
+                    event.preventDefault(); // Prevent submission if basket is empty
+                    return;
+                }
 
-            // Credit Card form submission (placeholder) - now specifically for credit card
-            if (creditCardForm) {
-                creditCardForm.addEventListener('submit', (event) => {
-                    event.preventDefault(); // Prevent default form submission
-                    console.log('Credit Card form submitted!');
-                    alert('Credit Card Payment successful! Your order has been placed.');
-                    basket = []; // Clear basket after successful payment
-                    updateBasketCount();
-                    renderBasket(); // Update basket display
-                    showSection('home'); // Go back to home after payment
-                });
-            }
+                // FormSubmit will handle the actual email sending.
+                // We just need to clear the basket and show a message after submission.
+                // The redirection is handled by FormSubmit's _next hidden input.
 
+                // Because FormSubmit performs a page redirect, we can't reliably
+                // clear the basket or show a message *after* the submission
+                // in the same way as with a mailto link or AJAX.
+                // The _next hidden input will redirect the user.
+                // So, we'll clear the basket and show a message *before* the submission
+                // or rely on the _autoresponse from FormSubmit.
+
+                // For a more robust solution, you'd typically use fetch() to submit
+                // the form data asynchronously and then handle success/failure.
+                // However, FormSubmit is designed for direct form action.
+
+                // Clear basket and update UI immediately before submission
+                // FormSubmit will redirect, so this state change won't persist on page load
+                // but it's good practice for the immediate UX.
+                basket = [];
+                updateBasketCount();
+                renderBasket(); // Update basket display
+
+                // Show a message to the user that the order is being submitted.
+                // FormSubmit will then redirect them.
+                showMessageBox('Submitting your order... You will be redirected shortly.');
+                // No need for showSection('home') here, as _next handles redirection.
+            });
 
             // Initial load: show the home section and update basket count
             showSection('home');
