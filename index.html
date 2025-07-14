@@ -676,27 +676,36 @@
             <div class="mt-8 max-w-md mx-auto">
                 <h3 class="text-2xl font-bold text-indigo-700 mb-4 text-center">Your Details</h3>
                 <!-- FormSubmit will handle the submission directly -->
-                <form id="order-details-form" action="https://formsubmit.co/adam.ayliffe2018@gmail.com" method="POST" class="space-y-4">
-                    <input type="hidden" name="_captcha" value="false">
-                    <div>
-                        <label for="customer-name" class="block text-sm font-medium text-gray-700">Your Name</label>
-                        <input type="text" id="customer-name" name="Customer Name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                    </div>
-                    <div>
-                        <label for="customer-email" class="block text-sm font-medium text-gray-700">Your Email</label>
-                        <input type="email" id="customer-email" name="Customer Email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                    </div>
-                    <!-- Hidden input to set the email subject -->
-                    <input type="hidden" name="_subject" value="New Festive Finds Order!">
-                    <!-- Hidden input for autoresponse to customer -->
-                    <input type="hidden" name="_autoresponse" value="Thank you for your order from Festive Finds! We've received your order and will process it shortly.">
-                    <!-- Hidden input to redirect after submission -->
-                    <input type="hidden" name="_next" value="YOUR_WEBSITE_URL_HERE#home">
-                    <!-- Hidden input for the order details, populated by JS -->
-                    <input type="hidden" name="Order Details" id="order-details-hidden">
+                <form 
+  id="order-details-form" 
+  action="https://formsubmit.co/adam.ayliffe2018@gmail.com" 
+  method="POST" 
+  class="space-y-4">
 
-                    <button type="submit" id="submit-order-email-btn" class="w-full bg-green-600 text-white py-3 px-4 rounded-md text-lg font-semibold hover:bg-green-700 transition-colors duration-300">Submit Order</button>
-                </form>
+  <input type="hidden" name="_captcha" value="false">
+  <input type="hidden" name="_subject" value="New Festive Finds Order!">
+  <input type="hidden" name="_autoresponse" value="Thank you for your order from Festive Finds! We've received your order and will process it shortly.">
+  <input type="hidden" name="_next" value="YOUR_WEBSITE_URL_HERE#home">
+  <input type="hidden" name="Order Details" id="order-details-hidden">
+
+  <div>
+    <label for="customer-name">Your Name</label>
+    <input type="text" id="customer-name" name="Customer Name" required>
+  </div>
+
+  <div>
+    <label for="customer-email">Your Email</label>
+    <input type="email" id="customer-email" name="Customer Email" required>
+  </div>
+
+  <button 
+    type="submit" 
+    id="submit-order-email-btn" 
+    class="w-full bg-green-600 text-white py-3 px-4 rounded-md">
+    Submit Order
+  </button>
+</form>
+
             </div>
         </section>
 
