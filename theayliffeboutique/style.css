@@ -1,0 +1,479 @@
+/* General Styling */
+body {
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f8f8f8;
+    color: #333;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header */
+header {
+    background-color: #fff;
+    padding: 20px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2em;
+    color: #5d4a4a; /* Inspired by the image's text color */
+    margin: 0;
+}
+
+/* Navigation Bar */
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav ul li {
+    position: relative;
+    margin-left: 30px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #5d4a4a;
+    font-weight: 600;
+    padding: 10px 0;
+    display: block;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #8c7373; /* Slightly darker shade on hover */
+}
+
+/* Dropdown Menus */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-top: 3px solid #8c7373; /* Accent line */
+}
+
+.dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+    color: #8c7373;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Mobile Menu Icon */
+.mobile-menu-icon {
+    display: none; /* Hidden by default for desktop */
+    font-size: 2em;
+    cursor: pointer;
+    color: #5d4a4a;
+}
+
+/* Hero Section */
+.hero-section {
+    /* Using a placeholder. Replace with your actual hero image path. */
+    background: url('https://via.placeholder.com/1500x600/f0e6e6/5d4a4a?text=Elegant+Women\'s+Wear') no-repeat center center/cover;
+    color: white;
+    text-align: center;
+    padding: 100px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 500px; /* Ensure sufficient height */
+}
+
+.hero-content {
+    background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent overlay */
+    padding: 40px;
+    border-radius: 8px;
+}
+
+.hero-content h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5em;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Subtle shadow for readability */
+}
+
+.hero-content p {
+    font-size: 1.3em;
+    margin-bottom: 30px;
+    max-width: 600px;
+    line-height: 1.6;
+}
+
+.shop-now-button {
+    background-color: #8c7373; /* Button color matching theme */
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1em;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.shop-now-button:hover {
+    background-color: #5d4a4a; /* Darker on hover */
+}
+
+/* Featured Products */
+.featured-products {
+    padding: 60px 0;
+    text-align: center;
+}
+
+.featured-products h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8em;
+    margin-bottom: 40px;
+    color: #5d4a4a;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
+    gap: 30px;
+}
+
+.product-item {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 20px;
+    text-align: left;
+    transition: transform 0.3s ease;
+}
+
+.product-item:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+}
+
+.product-item img {
+    max-width: 100%;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    display: block;
+    height: 400px; /* Fixed height for consistency */
+    object-fit: cover; /* Ensures images cover the area without distortion */
+}
+
+.product-item h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4em;
+    margin-bottom: 10px;
+    color: #5d4a4a;
+}
+
+.product-item p {
+    font-size: 1.1em;
+    color: #666;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.product-item button {
+    background-color: #a8a0a0; /* Muted button color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 0.9em;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.product-item button:hover {
+    background-color: #8c7373; /* Darker on hover */
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 30px 0;
+    text-align: center;
+    margin-top: 50px;
+}
+
+footer .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+footer p {
+    margin-bottom: 15px;
+    font-size: 0.9em;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 0.9em;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #8c7373;
+}
+
+/* --- Chatbot Specific Styles --- */
+.chatbot-circle-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #8c7373; /* Matches header accent */
+    color: white;
+    font-size: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* High z-index to be on top */
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.chatbot-circle-button:hover {
+    background-color: #5d4a4a; /* Darker on hover */
+}
+
+.chatbot-container {
+    position: fixed;
+    bottom: 100px; /* Above the button */
+    right: 30px;
+    width: 350px;
+    height: 500px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    display: flex; /* Use flexbox for internal layout */
+    flex-direction: column;
+    overflow: hidden; /* Hide scrollbars if content overflows initially */
+    z-index: 999;
+    font-family: 'Open Sans', sans-serif;
+    display: none; /* Initially hidden, controlled by JS */
+}
+
+.chatbot-header {
+    background-color: #8c7373; /* Header color */
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.chatbot-header h3 {
+    margin: 0;
+    font-size: 1.2em;
+    font-family: 'Playfair Display', serif; /* Consistent font for header */
+}
+
+.close-chatbot {
+    font-size: 1.8em;
+    cursor: pointer;
+    color: white;
+    line-height: 1; /* Ensures 'x' is vertically centered */
+}
+
+.chatbot-messages {
+    flex-grow: 1; /* Takes up available space */
+    padding: 15px;
+    overflow-y: auto; /* Enable scrolling for messages */
+    background-color: #f5f5f5; /* Light background for chat area */
+}
+
+.message {
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 15px;
+    max-width: 80%; /* Messages don't fill entire width */
+    word-wrap: break-word; /* Prevents long words from overflowing */
+}
+
+.bot-message {
+    background-color: #e0e0e0; /* Light grey for bot messages */
+    align-self: flex-start; /* Aligns to the left */
+    border-bottom-left-radius: 0; /* Creates chat bubble shape */
+}
+
+.user-message {
+    background-color: #8c7373; /* Theme color for user messages */
+    color: white;
+    align-self: flex-end; /* Aligns to the right */
+    border-bottom-right-radius: 0;
+    margin-left: auto; /* Pushes user message to the right */
+}
+
+.quick-questions {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 10px; /* Space between buttons */
+}
+
+.quick-question-btn {
+    background-color: #f0e6e6; /* Lighter shade */
+    border: 1px solid #8c7373; /* Border matching theme */
+    padding: 10px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9em;
+    text-align: left;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    color: #5d4a4a; /* Text color for buttons */
+}
+
+.quick-question-btn:hover {
+    background-color: #e2d8d8;
+    border-color: #5d4a4a;
+}
+
+.chatbot-input {
+    display: flex;
+    border-top: 1px solid #eee;
+    padding: 10px 15px;
+    background-color: #fff;
+}
+
+.chatbot-input input {
+    flex-grow: 1;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 10px 15px;
+    font-size: 1em;
+    margin-right: 10px;
+    outline: none; /* Remove blue outline on focus */
+}
+
+.chatbot-input button {
+    background-color: #8c7373;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.chatbot-input button:hover {
+    background-color: #5d4a4a;
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+    header .container {
+        flex-wrap: wrap; /* Allow items to wrap */
+        justify-content: center; /* Center header items */
+    }
+
+    header h1 {
+        width: 100%; /* Full width for title */
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    nav {
+        display: none; /* Hide desktop nav by default */
+        width: 100%;
+        margin-top: 20px;
+        background-color: #fff; /* Ensure nav background is white when open */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    nav.active {
+        display: block; /* Show when 'active' class is added by JS */
+    }
+
+    nav ul {
+        flex-direction: column; /* Stack nav items vertically */
+        align-items: center;
+    }
+
+    nav ul li {
+        margin: 10px 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    .dropdown-content {
+        position: static; /* Dropdowns appear normally in flow */
+        box-shadow: none;
+        border-top: none;
+        background-color: #f9f9f9; /* Lighter background for dropdown items in mobile */
+        width: 100%;
+    }
+
+    .mobile-menu-icon {
+        display: block; /* Show mobile menu icon */
+        position: absolute; /* Position relative to header, or adjust for specific layout */
+        right: 5%;
+        top: 25px;
+    }
+
+    .hero-content h2 {
+        font-size: 2.5em;
+    }
+
+    .hero-content p {
+        font-size: 1em;
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr; /* Single column for small screens */
+    }
+}
+
+/* Mobile Responsiveness for Chatbot */
+@media (max-width: 600px) {
+    .chatbot-container {
+        width: 90%; /* Wider on small screens */
+        right: 5%;
+        bottom: 80px; /* Adjust position for smaller screens */
+        height: 80%; /* Take up more height */
+    }
+
+    .chatbot-circle-button {
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 1.8em;
+    }
+}
