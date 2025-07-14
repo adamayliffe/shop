@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Aylliffe Boutique</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>The Aylliffe Boutique</h1>
+            <nav>
+                <ul>
+                    <li><a href="#">New Arrivals</a></li>
+                    <li class="dropdown">
+                        <a href="#">Shop Women</a>
+                        <div class="dropdown-content">
+                            <a href="#">Dresses</a>
+                            <a href="#">Tops</a>
+                            <a href="#">Bottoms</a>
+                            <a href="#">Outerwear</a>
+                            <a href="#">Accessories</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#">Collections</a>
+                        <div class="dropdown-content">
+                            <a href="#">Summer Edit</a>
+                            <a href="#">Workwear</a>
+                            <a href="#">Evening Wear</a>
+                        </div>
+                    </li>
+                    <li><a href="#">Sale</a></li>
+                    <li><a href="#">About Us</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu-icon">&#9776;</div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <div class="hero-content">
+                <h2>Elegance in Every Stitch</h2>
+                <p>Discover your perfect style with our exquisite women's collection.</p>
+                <button class="shop-now-button">Shop Now</button>
+            </div>
+        </section>
+
+        <section class="featured-products container">
+            <h2>Featured Products</h2>
+            <div class="product-grid">
+                <div class="product-item">
+                    <img src="https://via.placeholder.com/300x400/f0e6e6/5d4a4a?text=Elegant+Dress" alt="Elegant Dress">
+                    <h3>Elegant Maxi Dress</h3>
+                    <p>$79.99</p>
+                    <button>View Details</button>
+                </div>
+                <div class="product-item">
+                    <img src="https://via.placeholder.com/300x400/e0e0e0/5d4a4a?text=Chic+Blouse" alt="Chic Blouse">
+                    <h3>Chic Silk Blouse</h3>
+                    <p>$49.99</p>
+                    <button>View Details</button>
+                </div>
+                <div class="product-item">
+                    <img src="https://via.placeholder.com/300x400/f5e5e5/5d4a4a?text=A-Line+Skirt" alt="A-Line Skirt">
+                    <h3>Flowy A-Line Skirt</h3>
+                    <p>$59.99</p>
+                    <button>View Details</button>
+                </div>
+                <div class="product-item">
+                    <img src="https://via.placeholder.com/300x400/ebebeb/5d4a4a?text=Tailored+Jacket" alt="Tailored Jacket">
+                    <h3>Tailored Blazer</h3>
+                    <p>$99.99</p>
+                    <button>View Details</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 The Aylliffe Boutique. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact Us</a>
+            </div>
+        </div>
+    </footer>
+
+    <button id="chatbot-button" class="chatbot-circle-button">?</button>
+
+    <div id="chatbot-container" class="chatbot-container">
+        <div class="chatbot-header">
+            <h3>The Aylliffe Boutique</h3>
+            <span class="close-chatbot">&times;</span>
+        </div>
+        <div class="chatbot-messages" id="chatbot-messages">
+            <div class="message bot-message">
+                <p>Hi there,</p>
+                <p>Here are some questions that some of our buyers ask.</p>
+            </div>
+            <div class="quick-questions">
+                <button class="quick-question-btn" data-question="women-size">What size do you go up to for the women's store?</button>
+                <button class="quick-question-btn" data-question="baby-size">What sizes do you go up to on the baby store?</button>
+                <button class="quick-question-btn" data-question="shipping">How far do you ship too?</button>
+            </div>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
