@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You for Your Festive Finds!</title>
+    <!-- Tailwind CSS CDN for easy styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for a festive look */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(to bottom right, #ef4444, #dc2626); /* Red gradient background */
+            min-height: 100vh; /* Ensure it takes full viewport height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px; /* Add some padding around the content */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent white background */
+            border-radius: 20px; /* More rounded corners */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+            padding: 40px; /* Generous padding */
+            max-width: 600px; /* Max width for readability */
+            text-align: center;
+            animation: fadeIn 1s ease-out; /* Fade-in animation */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .festive-icon {
+            font-size: 4rem; /* Larger icon */
+            color: #16a34a; /* Green for festive touch */
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #dc2626; /* Darker red for heading */
+            font-size: 2.5rem; /* Larger heading */
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #4b5563; /* Darker grey for text */
+            font-size: 1.1rem; /* Slightly larger paragraph text */
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .btn-primary {
+            background-color: #16a34a; /* Green button */
+            color: white;
+            padding: 12px 28px; /* Larger padding for buttons */
+            border-radius: 10px; /* Rounded buttons */
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: inline-block; /* Allow spacing between buttons */
+            margin: 0 10px; /* Space out buttons */
+        }
+
+        .btn-primary:hover {
+            background-color: #15803d; /* Darker green on hover */
+            transform: translateY(-2px); /* Slight lift effect */
+        }
+
+        .btn-secondary {
+            background-color: #facc15; /* Gold/yellow button */
+            color: #78350f; /* Dark brown text for contrast */
+            padding: 12px 28px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #eab308; /* Darker gold on hover */
+            transform: translateY(-2px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 2rem;
+            }
+            p {
+                font-size: 1rem;
+            }
+            .btn-primary, .btn-secondary {
+                display: block; /* Stack buttons on small screens */
+                width: 100%;
+                margin: 10px 0; /* Adjust margin for stacked buttons */
+            }
+            .container {
+                padding: 30px 20px; /* Adjust padding for smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Font Awesome for the festive icon -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <div class="festive-icon">
+            <i class="fas fa-gift"></i> <!-- A gift icon for festive feel -->
+        </div>
+        <h1>Thank You, Festive Friend!</h1>
+        <p>Your order for delightful festive finds has been successfully placed and is now being processed. We're so excited for you to receive your items!</p>
+        <p>You will receive an email confirmation shortly with all the details. In the meantime, feel free to explore more of our holiday collection.</p>
+        <div class="flex flex-col sm:flex-row justify-center mt-8">
+            <a href="#" class="btn-primary">Continue Shopping</a>
+            <a href="#" class="btn-secondary">Back to Homepage</a>
+        </div>
+    </div>
+</body>
+</html>
