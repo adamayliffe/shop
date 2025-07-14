@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (mobileMenuIcon && nav) {
         mobileMenuIcon.addEventListener('click', () => {
-            nav.classList.toggle('active'); // Toggles the 'active' class on the <nav> element
+            nav.classList.toggle('active');
         });
     }
 
@@ -16,16 +16,129 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatbotMessages = document.getElementById('chatbot-messages');
     const userInput = document.getElementById('user-input');
     const sendButton = document.getElementById('send-button');
-    const quickQuestionBtns = document.querySelectorAll('.quick-question-btn'); // Select all quick question buttons
+    const quickQuestionsContainer = chatbotMessages.querySelector('.quick-questions'); // Reference to the div holding quick questions
+
+    // Define question sets
+    const initialQuestions = [
+        { type: 'women-size', text: 'What size do you go up to for the women\'s store?' },
+        { type: 'baby-size', text: 'What sizes do you go up to on the baby store?' },
+        { type: 'shipping', text: 'How far do you ship too?' },
+        { type: 'talk-to-agent', text: 'I need to talk to an agent.' }
+    ];
+
+    const followupQuestions = [
+        { type: 'returns-exchange', text: 'What is your return/exchange policy?' },
+        { type: 'order-status', text: 'How can I check my order status?' },
+        { type: 'product-care', text: 'How do I care for my garments?' },
+        { type: 'more-help', text: 'I need more help.' } // Option to go back to initial or just say talk to agent
+    ];
+
+    const agentContactQuestion = [
+        { type: 'talk-to-agent', text: 'Contact an Agent via Email' }
+    ];
+
+
+    // Object to store all possible answers
+    const answers = {
+        'women-size': "For our women's store, we generally carry sizes from XS (UK 6) to XXL (UK 18-20), with a selection of items going up to 3XL (UK 22). Please check individual product pages for specific sizing charts, as fit can vary by brand.",
+        'baby-size': "Our baby store offers sizes from Newborn (0-3 months) up to 24 months. Some popular items also extend to toddler sizes (2T, 3T, 4T). We focus on comfortable and durable materials for little ones!",
+        'shipping': "We offer worldwide shipping! Standard shipping within the UK typically takes 3-5 business days. International shipping times vary by destination, usually 7-14 business days. Express options are available at checkout. You can find more details on our 'Shipping Information' page.",
+        'returns-exchange': "Our return policy allows returns within 30 days of purchase for a full refund or exchange, provided items are unworn, unwashed, and with original tags. Please see our 'Returns Policy' page for full details.",
+        'order-status': "To check your order status, please visit our 'Track Order' page and enter your order number and email address. You'll receive real-time updates there.",
+        'product-care': "Most of our garments come with specific care instructions on their labels. Generally, we recommend cold water wash on a gentle cycle and air drying to preserve fabric quality and color. Delicate items may require hand washing.",
+        'more-help': "Please select a specific query from the options, or if you still need assistance, you can type your question or choose to talk to an agent.",
+        'talk-to-agent-intro': "If you wish to speak with an agent, please click the button below to send us an email. We'll get back to you as soon as possible.",
+        'generic-typed-message': "Thanks for reaching out! We'll get back to you shortly.",
+        'initial-greeting': "Hi there,\nHere are some questions that some of our buyers ask."
+    };
+
+    // Function to add a message to the chat display
+    function addMessage(message, type) {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message', type);
+        // Handle newlines for messages with multiple paragraphs
+        message.split('\n').forEach(line => {
+            const paragraph = document.createElement('p');
+            paragraph.textContent = line;
+            messageDiv.appendChild(paragraph);
+        });
+        chatbotMessages.appendChild(messageDiv);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Auto-scroll
+    }
+
+    // Function to display quick question buttons
+    function displayQuickQuestions(questions) {
+        // Clear previous questions
+        quickQuestionsContainer.innerHTML = '';
+        questions.forEach(q => {
+            const button = document.createElement('button');
+            button.classList.add('quick-question-btn');
+            button.textContent = q.text;
+            button.dataset.question = q.type; // Store the question type in a data attribute
+            quickQuestionsContainer.appendChild(button);
+        });
+        attachQuickQuestionListeners(); // Re-attach listeners to new buttons
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Auto-scroll
+    }
+
+    // Function to attach event listeners to quick question buttons
+    function attachQuickQuestionListeners() {
+        const currentQuickQuestionBtns = quickQuestionsContainer.querySelectorAll('.quick-question-btn');
+        currentQuickQuestionBtns.forEach(button => {
+            button.removeEventListener('click', handleQuickQuestionClick); // Prevent duplicate listeners
+            button.addEventListener('click', handleQuickQuestionClick);
+        });
+    }
+
+    // Handler for quick question button clicks
+    function handleQuickQuestionClick(event) {
+        const button = event.target;
+        const questionText = button.textContent;
+        const questionType = button.dataset.question;
+
+        addMessage(questionText, 'user-message');
+
+        // Provide immediate feedback to the user that their query is being processed
+        setTimeout(() => {
+            if (questionType === 'talk-to-agent') {
+                addMessage(answers['talk-to-agent-intro'], 'bot-message');
+                displayQuickQuestions(agentContactQuestion); // Show only the "Contact via Email" button
+            } else if (questionType === 'more-help') {
+                addMessage(answers['more-help'], 'bot-message');
+                displayQuickQuestions(initialQuestions); // Go back to initial questions
+            } else {
+                addMessage(answers[questionType], 'bot-message'); // Display the answer
+                // After giving an answer, display followup questions
+                setTimeout(() => {
+                    addMessage("Is there anything else I can help you with?", 'bot-message');
+                    displayQuickQuestions(followupQuestions);
+                }, 1000); // Small delay before showing next set of questions
+            }
+        }, 800);
+    }
+
+    // Function to handle "Talk to an Agent" via email
+    function sendEmailToAgent() {
+        const companyEmail = 'support@aylliffeboutique.com'; // Replace with your actual company email
+        const subject = encodeURIComponent('Customer Support Request from Website Chatbot');
+        const body = encodeURIComponent('Dear Aylliffe Boutique Support Team,\n\nI would like to speak with an agent regarding the following:\n\n[Please describe your query here]\n\nMy name is [Your Name] and my email is [Your Email].\n\nThank you.');
+
+        window.location.href = `mailto:${companyEmail}?subject=${subject}&body=${body}`;
+        addMessage("Opening your email client now. Please send us a detailed message!", 'bot-message');
+    }
+
+
+    // --- Event Listeners and Initial Setup ---
 
     // Toggle chatbot visibility
     if (chatbotButton) {
         chatbotButton.addEventListener('click', () => {
-            // If display is 'flex', set to 'none'; otherwise, set to 'flex'
             chatbotContainer.style.display = chatbotContainer.style.display === 'flex' ? 'none' : 'flex';
             if (chatbotContainer.style.display === 'flex') {
-                // Scroll to the bottom of messages when chatbot opens
-                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                // When opening, ensure initial greeting and questions are displayed
+                chatbotMessages.innerHTML = ''; // Clear previous messages
+                addMessage(answers['initial-greeting'], 'bot-message');
+                displayQuickQuestions(initialQuestions);
             }
         });
     }
@@ -37,29 +150,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Function to add a message to the chat display
-    function addMessage(message, type) {
-        const messageDiv = document.createElement('div');
-        messageDiv.classList.add('message', type); // Add 'message' and type ('user-message' or 'bot-message') classes
-        const paragraph = document.createElement('p');
-        paragraph.textContent = message;
-        messageDiv.appendChild(paragraph);
-        chatbotMessages.appendChild(messageDiv);
-        chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Auto-scroll to the latest message
-    }
-
     // Handle sending user messages from input field
     if (sendButton) {
         sendButton.addEventListener('click', () => {
-            const message = userInput.value.trim(); // Get and trim user input
-            if (message) { // Only send if message is not empty
-                addMessage(message, 'user-message'); // Add user message to chat
-                userInput.value = ''; // Clear input field
-
+            const message = userInput.value.trim();
+            if (message) {
+                addMessage(message, 'user-message');
+                userInput.value = '';
                 // Simulate a generic bot response for typed messages
                 setTimeout(() => {
-                    addMessage("Thanks for reaching out! We'll get back to you shortly.", 'bot-message');
-                }, 1000); // 1-second delay for bot response
+                    addMessage(answers['generic-typed-message'], 'bot-message');
+                    // After a typed message, always offer to talk to an agent or provide more help options
+                    setTimeout(() => {
+                         addMessage("Is there anything else I can help you with?", 'bot-message');
+                         displayQuickQuestions(followupQuestions); // Offer followup or agent contact
+                    }, 1000);
+                }, 1000);
             }
         });
     }
@@ -68,43 +174,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (userInput) {
         userInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                sendButton.click(); // Simulate a click on the send button
+                sendButton.click();
             }
         });
     }
 
-    // --- Handle Quick Questions from buttons ---
-    if (quickQuestionBtns.length > 0) {
-        quickQuestionBtns.forEach(button => {
-            button.addEventListener('click', () => {
-                const questionText = button.textContent; // Get the text of the clicked button
-                const questionType = button.dataset.question; // Get the 'data-question' attribute value
+    // Delegation for dynamically added quick question buttons
+    // We attach one listener to the parent container and check the target
+    quickQuestionsContainer.addEventListener('click', (event) => {
+        if (event.target.classList.contains('quick-question-btn')) {
+            const questionType = event.target.dataset.question;
+            if (questionType === 'talk-to-agent') { // Check if it's the specific "talk to agent" button
+                sendEmailToAgent();
+            } else {
+                handleQuickQuestionClick(event); // Handle other quick questions
+            }
+        }
+    });
 
-                // Add the clicked question as a user message
-                addMessage(questionText, 'user-message');
-
-                // Determine the bot's answer based on the 'data-question' value
-                let botAnswer = '';
-                switch (questionType) {
-                    case 'women-size':
-                        botAnswer = "For our women's store, we generally carry sizes from XS (UK 6) to XXL (UK 18-20), with a selection of items going up to 3XL (UK 22). Please check individual product pages for specific sizing charts, as fit can vary by brand.";
-                        break;
-                    case 'baby-size':
-                        botAnswer = "Our baby store offers sizes from Newborn (0-3 months) up to 24 months. Some popular items also extend to toddler sizes (2T, 3T, 4T). We focus on comfortable and durable materials for little ones!";
-                        break;
-                    case 'shipping':
-                        botAnswer = "We offer worldwide shipping! Standard shipping within the UK typically takes 3-5 business days. International shipping times vary by destination, usually 7-14 business days. Express options are available at checkout. You can find more details on our 'Shipping Information' page.";
-                        break;
-                    default:
-                        // Fallback if a quick question type is not recognized
-                        botAnswer = "I'm sorry, I don't have a pre-defined answer for that specific quick question. Can you please rephrase or type your query above?";
-                }
-
-                // Add the bot's answer after a short delay
-                setTimeout(() => {
-                    addMessage(botAnswer, 'bot-message');
-                }, 800); // Shorter delay for quick answers
-            });
-        });
-    }
+    // Initial display of questions when chatbot is opened (already handled in chatbotButton click)
 });
