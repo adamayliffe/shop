@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Festive Finds Shop</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Light blue-gray background */
+            color: #334155; /* Darker text */
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: #ffffff;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 10;
+            border-radius: 0.5rem; /* Rounded corners for dropdown */
+            overflow: hidden; /* Ensures rounded corners apply to children */
+        }
+        .dropdown-menu a {
+            color: #334155; /* Dark text for links */
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+        .dropdown-menu a:hover {
+            background-color: #e2e8f0; /* Light gray on hover */
+        }
+        .section-content {
+            display: none; /* Hidden by default */
+        }
+        .section-content.active {
+            display: block; /* Shown when active */
+        }
+
+        /* Custom styles for mobile menu icon */
+        .hamburger-icon {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 24px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .hamburger-icon span {
+            display: block;
+            height: 2px;
+            width: 100%;
+            background: #ffffff; /* White bars */
+            border-radius: 9999px; /* Fully rounded */
+            transition: all 0.3s ease-in-out;
+        }
+        .hamburger-icon.open span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .hamburger-icon.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger-icon.open span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* Custom styles for payment buttons */
+        .payment-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: white;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .payment-button img {
+            height: 1.5rem; /* Adjust as needed */
+            margin-right: 0.75rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header and Navigation -->
+    <header class="bg-gradient-to-r from-purple-600 to-indigo-700 shadow-lg py-4 px-6 md:px-10">
+        <nav class="container mx-auto flex justify-between items-center">
+            <!-- Festive Finds Logo - Now links to home section -->
+            <a href="#home" class="text-white text-3xl font-bold tracking-tight rounded-lg p-2 hover:bg-white hover:bg-opacity-10 transition-colors duration-300 data-section-link">Festive Finds</a>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-white focus:outline-none p-2 rounded-md transition-colors duration-300 hover:bg-white hover:bg-opacity-10">
+                    <div class="hamburger-icon" id="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Desktop Menu -->
+            <ul id="main-nav" class="hidden md:flex space-x-8 text-white font-medium">
+                <!-- Birthday Dropdown -->
+                <li class="relative dropdown group">
+                    <a href="#" class="hover:text-purple-200 transition-colors duration-300 py-2 px-3 rounded-md">Birthday</a>
+                    <div class="dropdown-menu group-hover:block absolute top-full left-0 mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-xl overflow-hidden transition-all duration-300 ease-in-out transform origin-top scale-y-0 group-hover:scale-y-100">
+                        <a href="#birthday-bottle-labels" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Bottle Labels</a>
+                        <a href="#birthday-banners" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Banners</a>
+                        <a href="#birthday-balloons" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Balloons</a>
+                        <a href="#birthday-cup-labels" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Cup Labels</a>
+                        <a href="#birthday-cards" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Cards</a>
+                    </div>
+                </li>
+                <!-- Christmas Dropdown -->
+                <li class="relative dropdown group">
+                    <a href="#" class="hover:text-purple-200 transition-colors duration-300 py-2 px-3 rounded-md">Christmas</a>
+                    <div class="dropdown-menu group-hover:block absolute top-full left-0 mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-xl overflow-hidden transition-all duration-300 ease-in-out transform origin-top scale-y-0 group-hover:scale-y-100">
+                        <a href="#christmas-bottle-labels" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Bottle Labels</a>
+                        <a href="#christmas-banners" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Banners</a>
+                        <a href="#christmas-balloons" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Balloons</a>
+                        <a href="#christmas-cup-labels" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Cup Labels</a>
+                        <a href="#christmas-cards" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Cards</a>
+                    </div>
+                </li>
+                <!-- Halloween Dropdown -->
+                <li class="relative dropdown group">
+                    <a href="#" class="hover:text-purple-200 transition-colors duration-300 py-2 px-3 rounded-md">Halloween</a>
+                    <div class="dropdown-menu group-hover:block absolute top-full left-0 mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-xl overflow-hidden transition-all duration-300 ease-in-out transform origin-top scale-y-0 group-hover:scale-y-100">
+                        <a href="#halloween-bottle-labels" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Bottle Labels</a>
+                        <a href="#halloween-banners" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Banners</a>
+                        <a href="#halloween-balloons" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Balloons</a>
+                        <a href="#halloween-cup-labels" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Cup Labels</a>
+                        <a href="#halloween-cards" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Cards</a>
+                    </div>
+                </li>
+                <!-- Fireworks Night Dropdown -->
+                <li class="relative dropdown group">
+                    <a href="#" class="hover:text-purple-200 transition-colors duration-300 py-2 px-3 rounded-md">Fireworks Night</a>
+                    <div class="dropdown-menu group-hover:block absolute top-full left-0 mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-xl overflow-hidden transition-all duration-300 ease-in-out transform origin-top scale-y-0 group-hover:scale-y-100">
+                        <a href="#fireworks-bottle-labels" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Bottle Labels</a>
+                        <a href="#fireworks-banners" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Banners</a>
+                        <a href="#fireworks-balloons" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Balloons</a>
+                        <a href="#fireworks-cup-labels" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Cup Labels</a>
+                        <a href="#fireworks-cards" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Cards</a>
+                    </div>
+                </li>
+                <!-- Easter Dropdown -->
+                <li class="relative dropdown group">
+                    <a href="#" class="hover:text-purple-200 transition-colors duration-300 py-2 px-3 rounded-md">Easter</a>
+                    <div class="dropdown-menu group-hover:block absolute top-full left-0 mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-xl overflow-hidden transition-all duration-300 ease-in-out transform origin-top scale-y-0 group-hover:scale-y-100">
+                        <a href="#easter-bottle-labels" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Bottle Labels</a>
+                        <a href="#easter-banners" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Banners</a>
+                        <a href="#easter-balloons" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Balloons</a>
+                        <a href="#easter-cup-labels" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Cup Labels</a>
+                        <a href="#easter-cards" class="block px-4 py-2 hover:bg-indigo-100 data-section-link">Cards</a>
+                    </div>
+                </li>
+                <!-- Basket Link -->
+                <li>
+                    <a href="#basket" class="hover:text-purple-200 transition-colors duration-300 py-2 px-3 rounded-md data-section-link">Basket (<span id="basket-count">0</span>)</a>
+                </li>
+            </ul>
+
+            <!-- Mobile Menu Overlay (hidden by default) -->
+            <div id="mobile-menu-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-95 z-40 hidden md:hidden">
+                <div class="flex justify-end p-6">
+                    <button id="close-mobile-menu" class="text-white text-3xl focus:outline-none">&times;</button>
+                </div>
+                <ul class="flex flex-col items-center space-y-6 text-white text-xl font-medium pt-10">
+                    <!-- Birthday Dropdown for Mobile -->
+                    <li class="relative w-full text-center">
+                        <button class="mobile-dropdown-toggle hover:text-purple-200 transition-colors duration-300 py-2 px-3 rounded-md w-full">Birthday</button>
+                        <div class="mobile-dropdown-menu hidden mt-2 bg-gray-800 text-gray-200 rounded-lg shadow-xl overflow-hidden w-full">
+                            <a href="#birthday-bottle-labels" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Bottle Labels</a>
+                            <a href="#birthday-banners" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Banners</a>
+                            <a href="#birthday-balloons" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Balloons</a>
+                            <a href="#birthday-cup-labels" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Cup Labels</a>
+                            <a href="#birthday-cards" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Cards</a>
+                        </div>
+                    </li>
+                    <!-- Christmas Dropdown for Mobile -->
+                    <li class="relative w-full text-center">
+                        <button class="mobile-dropdown-toggle hover:text-purple-200 transition-colors duration-300 py-2 px-3 rounded-md w-full">Christmas</button>
+                        <div class="mobile-dropdown-menu hidden mt-2 bg-gray-800 text-gray-200 rounded-lg shadow-xl overflow-hidden w-full">
+                            <a href="#christmas-bottle-labels" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Bottle Labels</a>
+                            <a href="#christmas-banners" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Banners</a>
+                            <a href="#christmas-balloons" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Balloons</a>
+                            <a href="#christmas-cup-labels" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Cup Labels</a>
+                            <a href="#christmas-cards" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Cards</a>
+                        </div>
+                    </li>
+                    <!-- Halloween Dropdown for Mobile -->
+                    <li class="relative w-full text-center">
+                        <button class="mobile-dropdown-toggle hover:text-purple-200 transition-colors duration-300 py-2 px-3 rounded-md w-full">Halloween</button>
+                        <div class="mobile-dropdown-menu hidden mt-2 bg-gray-800 text-gray-200 rounded-lg shadow-xl overflow-hidden w-full">
+                            <a href="#halloween-bottle-labels" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Bottle Labels</a>
+                            <a href="#halloween-banners" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Banners</a>
+                            <a href="#halloween-balloons" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Balloons</a>
+                            <a href="#halloween-cup-labels" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Cup Labels</a>
+                            <a href="#halloween-cards" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Cards</a>
+                        </div>
+                    </li>
+                    <!-- Fireworks Night Dropdown for Mobile -->
+                    <li class="relative w-full text-center">
+                        <button class="mobile-dropdown-toggle hover:text-purple-200 transition-colors duration-300 py-2 px-3 rounded-md w-full">Fireworks Night</button>
+                        <div class="mobile-dropdown-menu hidden mt-2 bg-gray-800 text-gray-200 rounded-lg shadow-xl overflow-hidden w-full">
+                            <a href="#fireworks-bottle-labels" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Bottle Labels</a>
+                            <a href="#fireworks-banners" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Banners</a>
+                            <a href="#fireworks-balloons" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Balloons</a>
+                            <a href="#fireworks-cup-labels" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Cup Labels</a>
+                            <a href="#fireworks-cards" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Cards</a>
+                        </div>
+                    </li>
+                    <!-- Easter Dropdown for Mobile -->
+                    <li class="relative w-full text-center">
+                        <button class="mobile-dropdown-toggle hover:text-purple-200 transition-colors duration-300 py-2 px-3 rounded-md w-full">Easter</button>
+                        <div class="mobile-dropdown-menu hidden mt-2 bg-gray-800 text-gray-200 rounded-lg shadow-xl overflow-hidden w-full">
+                            <a href="#easter-bottle-labels" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Bottle Labels</a>
+                            <a href="#easter-banners" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Banners</a>
+                            <a href="#easter-balloons" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Balloons</a>
+                            <a href="#easter-cup-labels" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Cup Labels</a>
+                            <a href="#easter-cards" class="block px-4 py-2 hover:bg-indigo-700 data-section-link">Cards</a>
+                        </div>
+                    </li>
+                    <!-- Basket Link for Mobile -->
+                    <li>
+                        <a href="#basket" class="hover:text-purple-200 transition-colors duration-300 py-2 px-3 rounded-md data-section-link">Basket (<span id="basket-count-mobile">0</span>)</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow container mx-auto p-6 md:p-10">
+        <!-- Home Section (Default) -->
+        <section id="home" class="section-content active bg-white rounded-xl shadow-lg p-8 mb-8 text-center">
+            <h2 class="text-4xl font-extrabold text-indigo-700 mb-4">Welcome to Festive Finds!</h2>
+            <p class="text-lg text-gray-600 mb-6">Your one-stop shop for all your celebration needs. Browse our categories above to find the perfect items for your special occasion.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Example Category Cards -->
+                <div class="bg-purple-100 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="text-2xl font-semibold text-purple-800 mb-2">Birthday Bash</h3>
+                    <p class="text-gray-700">Everything you need to make a birthday unforgettable!</p>
+                    <img src="https://placehold.co/400x250/d8b4fe/7c3aed?text=Birthday+Items" alt="Birthday Items" class="mt-4 w-full h-40 object-cover rounded-md">
+                </div>
+                <div class="bg-red-100 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="text-2xl font-semibold text-red-800 mb-2">Christmas Cheer</h3>
+                    <p class="text-gray-700">Deck the halls with our festive Christmas collection.</p>
+                    <img src="https://placehold.co/400x250/fecaca/dc2626?text=Christmas+Items" alt="Christmas Items" class="mt-4 w-full h-40 object-cover rounded-md">
+                </div>
+                <div class="bg-orange-100 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="text-2xl font-semibold text-orange-800 mb-2">Spooky Halloween</h3>
+                    <p class="text-gray-700">Get ready for a frightfully good time!</p>
+                    <img src="https://placehold.co/400x250/fed7aa/ea580c?text=Halloween+Items" alt="Halloween Items" class="mt-4 w-full h-40 object-cover rounded-md">
+                </div>
+            </div>
+        </section>
+
+        <!-- Birthday Sections -->
+        <section id="birthday-bottle-labels" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Birthday Bottle Labels</h2>
+            <p class="text-gray-600">Customize your party drinks with our unique birthday bottle labels. Perfect for any age!</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/a78bfa/ffffff?text=Label+Design+1" alt="Birthday Label 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Elegant Gold Label</h3>
+                    <p class="text-gray-500 product-price">£4.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/c4b5fd/ffffff?text=Label+Design+2" alt="Birthday Label 2" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Fun Confetti Label</h3>
+                    <p class="text-gray-500 product-price">£3.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/ddd6fe/ffffff?text=Label+Design+3" alt="Birthday Label 3" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Personalized Photo Label</h3>
+                    <p class="text-gray-500 product-price">£5.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="birthday-banners" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Birthday Banners</h2>
+            <p class="text-gray-600">Make a statement with our custom birthday banners. Available in various sizes and designs.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/93c5fd/ffffff?text=Banner+Design+1" alt="Birthday Banner 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Happy Birthday Banner</h3>
+                    <p class="text-gray-500 product-price">£12.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/bfdbfe/ffffff?text=Banner+Design+2" alt="Birthday Banner 2" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Custom Name Banner</h3>
+                    <p class="text-gray-500 product-price">£15.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="birthday-balloons" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Birthday Balloons</h2>
+            <p class="text-gray-600">Brighten up any birthday party with our wide selection of balloons, from foil numbers to latex assortments.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/99f6e4/ffffff?text=Balloon+Set+1" alt="Birthday Balloon 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Assorted Latex Pack</h3>
+                    <p class="text-gray-500 product-price">£8.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/a7f3d0/ffffff?text=Balloon+Set+2" alt="Birthday Balloon 2" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Giant Number Balloon</h3>
+                    <p class="text-gray-500 product-price">£6.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="birthday-cup-labels" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Birthday Cup Labels</h2>
+            <p class="text-gray-600">Add a personal touch to your party cups with our fun and festive birthday labels.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/bae6fd/ffffff?text=Cup+Label+1" alt="Birthday Cup Label 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Party Animal Labels</h3>
+                    <p class="text-gray-500 product-price">£2.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/c7d2fe/ffffff?text=Cup+Label+2" alt="Birthday Cup Label 2" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Custom Name Cup Labels</h3>
+                    <p class="text-gray-500 product-price">£3.49</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="birthday-cards" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Birthday Cards</h2>
+            <p class="text-gray-600">Find the perfect birthday card for everyone on your list, from humorous to heartfelt.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/e0e7ff/ffffff?text=Card+Design+1" alt="Birthday Card 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Classic Birthday Card</h3>
+                    <p class="text-gray-500 product-price">£2.50</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/c7d2fe/ffffff?text=Card+Design+2" alt="Birthday Card 2" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Funny Birthday Card</h3>
+                    <p class="text-gray-500 product-price">£2.75</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Christmas Sections -->
+        <section id="christmas-bottle-labels" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Christmas Bottle Labels</h2>
+            <p class="text-gray-600">Give your festive drinks a special touch with our Christmas-themed bottle labels.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/fecaca/ffffff?text=Xmas+Label+1" alt="Christmas Label 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Santa's Helper Label</h3>
+                    <p class="text-gray-500 product-price">£4.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+        <section id="christmas-banners" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Christmas Banners</h2>
+            <p class="text-gray-600">Decorate your home with our beautiful Christmas banners.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/fca5a5/ffffff?text=Xmas+Banner+1" alt="Christmas Banner 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Merry Christmas Banner</h3>
+                    <p class="text-gray-500 product-price">£12.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+        <section id="christmas-balloons" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Christmas Balloons</h2>
+            <p class="text-gray-600">Add some festive cheer with our range of Christmas balloons.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/ef4444/ffffff?text=Xmas+Balloon+1" alt="Christmas Balloon 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Snowflake Balloons</h3>
+                    <p class="text-gray-500 product-price">£8.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+        <section id="christmas-cup-labels" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Christmas Cup Labels</h2>
+            <p class="text-gray-600">Festive labels for your Christmas party cups.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/dc2626/ffffff?text=Xmas+Cup+1" alt="Christmas Cup Label 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Reindeer Cup Labels</h3>
+                    <p class="text-gray-500 product-price">£2.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+        <section id="christmas-cards" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Christmas Cards</h2>
+            <p class="text-gray-600">Send holiday greetings with our beautiful Christmas cards.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/b91c1c/ffffff?text=Xmas+Card+1" alt="Christmas Card 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Classic Christmas Card</h3>
+                    <p class="text-gray-500 product-price">£2.50</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Halloween Sections -->
+        <section id="halloween-bottle-labels" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Halloween Bottle Labels</h2>
+            <p class="text-gray-600">Spook up your drinks with our eerie Halloween bottle labels.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/ffe4e6/ffffff?text=Halloween+Label+1" alt="Halloween Label 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Witch's Brew Label</h3>
+                    <p class="text-gray-500 product-price">£4.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+        <section id="halloween-banners" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Halloween Banners</h2>
+            <p class="text-gray-600">Decorate for a hauntingly good time with our Halloween banners.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/fed7aa/ffffff?text=Halloween+Banner+1" alt="Halloween Banner 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Happy Haunting Banner</h3>
+                    <p class="text-gray-500 product-price">£12.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+        <section id="halloween-balloons" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Halloween Balloons</h2>
+            <p class="text-gray-600">Spooky balloons to set the Halloween mood.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/fdba74/ffffff?text=Halloween+Balloon+1" alt="Halloween Balloon 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Ghostly Balloons</h3>
+                    <p class="text-gray-500 product-price">£8.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+        <section id="halloween-cup-labels" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Halloween Cup Labels</h2>
+            <p class="text-gray-600">Creepy and fun labels for your Halloween party cups.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/fb923c/ffffff?text=Halloween+Cup+1" alt="Halloween Cup Label 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Pumpkin Cup Labels</h3>
+                    <p class="text-gray-500 product-price">£2.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+        <section id="halloween-cards" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Halloween Cards</h2>
+            <p class="text-gray-600">Send spooky greetings with our Halloween cards.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/f97316/ffffff?text=Halloween+Card+1" alt="Halloween Card 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Trick or Treat Card</h3>
+                    <p class="text-gray-500 product-price">£2.50</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fireworks Night Sections -->
+        <section id="fireworks-bottle-labels" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Fireworks Night Bottle Labels</h2>
+            <p class="text-gray-600">Light up your drinks with our dazzling Fireworks Night bottle labels.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/fcd34d/ffffff?text=Fireworks+Label+1" alt="Fireworks Label 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Sparkler Label</h3>
+                    <p class="text-gray-500 product-price">£4.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+        <section id="fireworks-banners" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Fireworks Night Banners</h2>
+            <p class="text-gray-600">Celebrate with a bang using our vibrant Fireworks Night banners.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/fcd34d/ffffff?text=Fireworks+Banner+1" alt="Fireworks Banner 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Explosion Banner</h3>
+                    <p class="text-gray-500 product-price">£12.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+        <section id="fireworks-balloons" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Fireworks Night Balloons</h2>
+            <p class="text-gray-600">Add some sparkle with our Fireworks Night balloons.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/fcd34d/ffffff?text=Fireworks+Balloon+1" alt="Fireworks Balloon 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Glitter Balloons</h3>
+                    <p class="text-gray-500 product-price">£8.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+        <section id="fireworks-cup-labels" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Fireworks Night Cup Labels</h2>
+            <p class="text-gray-600">Sparkling labels for your Fireworks Night party cups.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/fcd34d/ffffff?text=Fireworks+Cup+1" alt="Fireworks Cup Label 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Firecracker Cup Labels</h3>
+                    <p class="text-gray-500 product-price">£2.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+        <section id="fireworks-cards" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Fireworks Night Cards</h2>
+            <p class="text-gray-600">Send explosive greetings with our Fireworks Night cards.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/fcd34d/ffffff?text=Fireworks+Card+1" alt="Fireworks Card 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Boom! Card</h3>
+                    <p class="text-gray-500 product-price">£2.50</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Easter Sections -->
+        <section id="easter-bottle-labels" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Easter Bottle Labels</h2>
+            <p class="text-gray-600">Hoppy Easter! Decorate your drinks with our charming Easter bottle labels.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/fde68a/ffffff?text=Easter+Label+1" alt="Easter Label 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Bunny Hop Label</h3>
+                    <p class="text-gray-500 product-price">£4.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+        <section id="easter-banners" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Easter Banners</h2>
+            <p class="text-gray-600">Bring spring cheer with our delightful Easter banners.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/fcd34d/ffffff?text=Easter+Banner+1" alt="Easter Banner 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Happy Easter Banner</h3>
+                    <p class="text-gray-500 product-price">£12.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+        <section id="easter-balloons" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Easter Balloons</h2>
+            <p class="text-gray-600">Colorful balloons for your Easter celebrations.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/fcd34d/ffffff?text=Easter+Balloon+1" alt="Easter Balloon 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Pastel Balloons</h3>
+                    <p class="text-gray-500 product-price">£8.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+        <section id="easter-cup-labels" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Easter Cup Labels</h2>
+            <p class="text-gray-600">Cute labels for your Easter party cups.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/fcd34d/ffffff?text=Easter+Cup+1" alt="Easter Cup Label 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Egg Hunt Cup Labels</h3>
+                    <p class="text-gray-500 product-price">£2.99</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+        <section id="easter-cards" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Easter Cards</h2>
+            <p class="text-gray-600">Send sweet greetings with our lovely Easter cards.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="border border-gray-200 rounded-lg p-4 text-center">
+                    <img src="https://placehold.co/300x200/fcd34d/ffffff?text=Easter+Card+1" alt="Easter Card 1" class="w-full h-40 object-cover rounded-md mb-2">
+                    <h3 class="font-semibold text-lg product-name">Spring Bloom Card</h3>
+                    <p class="text-gray-500 product-price">£2.50</p>
+                    <button class="add-to-basket-btn mt-4 bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-300">Add to Basket</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Basket Section -->
+        <section id="basket" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-4">Your Shopping Basket</h2>
+            <div id="basket-items" class="space-y-4">
+                <!-- Basket items will be rendered here by JavaScript -->
+                <p class="text-gray-600" id="empty-basket-message">Your basket is empty. Add some festive finds!</p>
+            </div>
+            <div class="mt-8 pt-4 border-t border-gray-200 flex justify-between items-center">
+                <p class="text-xl font-bold text-gray-800">Total: <span id="basket-total">£0.00</span></p>
+                <button id="checkout-btn" class="bg-indigo-600 text-white py-3 px-6 rounded-md text-lg font-semibold hover:bg-indigo-700 transition-colors duration-300">Proceed to Checkout</button>
+            </div>
+        </section>
+
+        <!-- Payment Options Page Section -->
+        <section id="payment-options" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8 text-center">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-6">Choose Your Payment Method</h2>
+            <p class="text-lg text-gray-600 mb-8">Select your preferred payment option to complete your purchase.</p>
+
+            <div class="flex flex-col items-center space-y-6 max-w-sm mx-auto">
+                <button id="paypal-btn" class="payment-button bg-blue-700 hover:bg-blue-800 w-full">
+                    <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_74x46.jpg" onerror="this.onerror=null;this.src='https://placehold.co/74x46/003087/ffffff?text=PayPal';" alt="PayPal Logo">
+                    Pay with PayPal
+                </button>
+
+                <button id="apple-pay-btn" class="payment-button bg-gray-900 hover:bg-black w-full">
+                    <img src="https://developer.apple.com/design/human-interface-guidelines/images/icons/apple-pay-logo.png" onerror="this.onerror=null;this.src='https://placehold.co/74x46/000000/ffffff?text=ApplePay';" alt="Apple Pay Logo">
+                    Pay with Apple Pay
+                </button>
+
+                <button id="google-pay-btn" class="payment-button bg-gray-700 hover:bg-gray-800 w-full">
+                    <img src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_200x66px.svg" onerror="this.onerror=null;this.src='https://placehold.co/74x46/4285F4/ffffff?text=GooglePay';" alt="Google Pay Logo">
+                    Pay with Google Pay
+                </button>
+
+                <button id="credit-card-btn" class="payment-button bg-indigo-600 hover:bg-indigo-700 w-full">
+                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                    Pay with Credit Card
+                </button>
+            </div>
+        </section>
+
+        <!-- Original Payment Page Section (now accessed via Credit Card button) -->
+        <section id="credit-card-payment-page" class="section-content bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h2 class="text-3xl font-bold text-indigo-700 mb-6">Credit Card Payment</h2>
+            <div class="max-w-md mx-auto">
+                <form id="credit-card-form" class="space-y-6">
+                    <div>
+                        <label for="cc-card-number" class="block text-sm font-medium text-gray-700">Card Number</label>
+                        <input type="text" id="cc-card-number" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" required>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="cc-expiry-date" class="block text-sm font-medium text-gray-700">Expiry Date (MM/YY)</label>
+                            <input type="text" id="cc-expiry-date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="MM/YY" maxlength="5" required>
+                        </div>
+                        <div>
+                            <label for="cc-cvc" class="block text-sm font-medium text-gray-700">CVC</label>
+                            <input type="text" id="cc-cvc" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="XXX" maxlength="4" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="cc-card-name" class="block text-sm font-medium text-gray-700">Name on Card</label>
+                        <input type="text" id="cc-card-name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                    </div>
+                    <div>
+                        <label for="cc-billing-address" class="block text-sm font-medium text-gray-700">Billing Address</label>
+                        <textarea id="cc-billing-address" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 text-white py-3 px-4 rounded-md text-lg font-semibold hover:bg-green-700 transition-colors duration-300">Confirm Credit Card Payment</button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6 px-6 md:px-10 mt-auto">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2023 Festive Finds. All rights reserved.</p>
+            <div class="flex justify-center space-x-4 mt-4">
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Privacy Policy</a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Terms of Service</a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Contact Us</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+            const closeMobileMenuButton = document.getElementById('close-mobile-menu');
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+            const sectionLinks = document.querySelectorAll('.data-section-link');
+            const mobileDropdownToggles = document.querySelectorAll('.mobile-dropdown-toggle');
+            const addToBasketButtons = document.querySelectorAll('.add-to-basket-btn');
+            const basketCountSpan = document.getElementById('basket-count');
+            const basketCountMobileSpan = document.getElementById('basket-count-mobile');
+            const basketItemsContainer = document.getElementById('basket-items');
+            const basketTotalSpan = document.getElementById('basket-total');
+            const emptyBasketMessage = document.getElementById('empty-basket-message');
+            const checkoutBtn = document.getElementById('checkout-btn');
+
+            // Payment option buttons
+            const paypalBtn = document.getElementById('paypal-btn');
+            const applePayBtn = document.getElementById('apple-pay-btn');
+            const googlePayBtn = document.getElementById('google-pay-btn');
+            const creditCardBtn = document.getElementById('credit-card-btn'); // New: button to go to credit card form
+
+            const creditCardForm = document.getElementById('credit-card-form'); // Renamed from paymentForm
+
+            let basket = []; // Array to store items in the basket
+
+            // Function to show a specific section and hide others
+            function showSection(sectionId) {
+                document.querySelectorAll('.section-content').forEach(section => {
+                    section.classList.remove('active');
+                });
+                const targetSection = document.getElementById(sectionId);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                    // If navigating to basket, render basket items
+                    if (sectionId === 'basket') {
+                        renderBasket();
+                    }
+                } else {
+                    // If no specific section is found, show the home section
+                    document.getElementById('home').classList.add('active');
+                }
+            }
+
+            // Function to update the basket count in the navigation
+            function updateBasketCount() {
+                const totalItems = basket.reduce((sum, item) => sum + item.quantity, 0);
+                basketCountSpan.textContent = totalItems;
+                basketCountMobileSpan.textContent = totalItems;
+            }
+
+            // Function to render basket items
+            function renderBasket() {
+                basketItemsContainer.innerHTML = ''; // Clear existing items
+                let total = 0;
+
+                if (basket.length === 0) {
+                    emptyBasketMessage.classList.remove('hidden');
+                    checkoutBtn.disabled = true; // Disable checkout if basket is empty
+                    checkoutBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    emptyBasketMessage.classList.add('hidden');
+                    checkoutBtn.disabled = false; // Enable checkout
+                    checkoutBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+                    basket.forEach((item, index) => {
+                        const itemElement = document.createElement('div');
+                        itemElement.classList.add('flex', 'justify-between', 'items-center', 'bg-gray-50', 'p-4', 'rounded-md', 'shadow-sm');
+                        itemElement.innerHTML = `
+                            <div>
+                                <p class="font-semibold text-gray-700">${item.name}</p>
+                                <p class="text-sm text-gray-500">Quantity: ${item.quantity} x £${item.price.toFixed(2)}</p>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-gray-800">£${(item.price * item.quantity).toFixed(2)}</span>
+                                <button class="remove-from-basket-btn bg-red-500 text-white text-sm py-1 px-3 rounded-md hover:bg-red-600 transition-colors duration-300" data-index="${index}">Remove</button>
+                            </div>
+                        `;
+                        basketItemsContainer.appendChild(itemElement);
+                        total += item.price * item.quantity;
+                    });
+                }
+                basketTotalSpan.textContent = `£${total.toFixed(2)}`;
+
+                // Add event listeners to newly rendered remove buttons
+                document.querySelectorAll('.remove-from-basket-btn').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        const indexToRemove = parseInt(event.target.dataset.index);
+                        removeFromBasket(indexToRemove);
+                    });
+                });
+            }
+
+            // Function to add an item to the basket
+            function addToBasket(productName, productPrice) {
+                const existingItem = basket.find(item => item.name === productName);
+                if (existingItem) {
+                    existingItem.quantity++;
+                } else {
+                    basket.push({ name: productName, price: productPrice, quantity: 1 });
+                }
+                updateBasketCount();
+                console.log(`${productName} added to basket!`);
+            }
+
+            // Function to remove an item from the basket
+            function removeFromBasket(index) {
+                if (basket[index].quantity > 1) {
+                    basket[index].quantity--;
+                } else {
+                    basket.splice(index, 1); // Remove item if quantity is 1
+                }
+                updateBasketCount();
+                renderBasket(); // Re-render basket after removal
+            }
+
+            // Event listener for navigation links (desktop and mobile)
+            sectionLinks.forEach(link => {
+                link.addEventListener('click', (event) => {
+                    event.preventDefault(); // Prevent default anchor behavior
+                    const sectionId = link.getAttribute('href').substring(1); // Get section ID from href
+                    showSection(sectionId);
+                    // Close mobile menu if open
+                    mobileMenuOverlay.classList.add('hidden');
+                    hamburgerIcon.classList.remove('open');
+                });
+            });
+
+            // Event listener for "Add to Basket" buttons
+            addToBasketButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const productCard = event.target.closest('.border'); // Find the parent product card
+                    const productName = productCard.querySelector('.product-name').textContent;
+                    const productPriceText = productCard.querySelector('.product-price').textContent;
+                    const productPrice = parseFloat(productPriceText.replace('£', ''));
+                    addToBasket(productName, productPrice);
+                });
+            });
+
+            // Mobile menu toggle
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenuOverlay.classList.toggle('hidden');
+                hamburgerIcon.classList.toggle('open');
+            });
+
+            closeMobileMenuButton.addEventListener('click', () => {
+                mobileMenuOverlay.classList.add('hidden');
+                hamburgerIcon.classList.remove('open');
+            });
+
+            // Mobile dropdown toggles
+            mobileDropdownToggles.forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    const dropdownMenu = toggle.nextElementSibling;
+                    if (dropdownMenu && dropdownMenu.classList.contains('mobile-dropdown-menu')) {
+                        dropdownMenu.classList.toggle('hidden');
+                    }
+                });
+            });
+
+            // Checkout button functionality: navigate to payment options page
+            checkoutBtn.addEventListener('click', () => {
+                if (basket.length > 0) {
+                    showSection('payment-options'); // Navigate to the new payment options page
+                } else {
+                    // Use a custom message box or modal instead of alert()
+                    console.log('Your basket is empty. Please add items before checking out.');
+                    // For now, we'll use a simple alert as a placeholder for a custom modal
+                    alert('Your basket is empty. Please add items before checking out.');
+                }
+            });
+
+            // Event listeners for simulated payment buttons
+            if (paypalBtn) {
+                paypalBtn.addEventListener('click', () => {
+                    alert('Simulating PayPal payment... (In a real app, this would redirect to PayPal)');
+                    basket = []; // Clear basket after simulated payment
+                    updateBasketCount();
+                    renderBasket();
+                    showSection('home'); // Go back to home after simulated payment
+                });
+            }
+
+            if (applePayBtn) {
+                applePayBtn.addEventListener('click', () => {
+                    alert('Simulating Apple Pay payment... (In a real app, this would open Apple Pay sheet)');
+                    basket = []; // Clear basket after simulated payment
+                    updateBasketCount();
+                    renderBasket();
+                    showSection('home'); // Go back to home after simulated payment
+                });
+            }
+
+            if (googlePayBtn) {
+                googlePayBtn.addEventListener('click', () => {
+                    alert('Simulating Google Pay payment... (In a real app, this would open Google Pay sheet)');
+                    basket = []; // Clear basket after simulated payment
+                    updateBasketCount();
+                    renderBasket();
+                    showSection('home'); // Go back to home after simulated payment
+                });
+            }
+
+            // Credit Card button functionality: navigate to the original credit card form
+            if (creditCardBtn) {
+                creditCardBtn.addEventListener('click', () => {
+                    showSection('credit-card-payment-page');
+                });
+            }
+
+            // Credit Card form submission (placeholder) - now specifically for credit card
+            if (creditCardForm) {
+                creditCardForm.addEventListener('submit', (event) => {
+                    event.preventDefault(); // Prevent default form submission
+                    console.log('Credit Card form submitted!');
+                    alert('Credit Card Payment successful! Your order has been placed.');
+                    basket = []; // Clear basket after successful payment
+                    updateBasketCount();
+                    renderBasket(); // Update basket display
+                    showSection('home'); // Go back to home after payment
+                });
+            }
+
+
+            // Initial load: show the home section and update basket count
+            showSection('home');
+            updateBasketCount();
+        });
+    </script>
+</body>
+</html>
